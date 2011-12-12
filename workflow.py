@@ -90,11 +90,11 @@ class Workflow:
         f.write('<adag name="%s" jobCount="%d" fileCount="0" childCount="%d">\n' % (self.name, jobCount, childCount))
         
         for j in self.jobs:
-            f.write('\t<job id="%s" namespace="%s" name="%s" runtime="%s" cores="%s">\n' % (j.id, j.namespace, j.name, j.runtime, j.cores))
+            f.write('\t<job id="%s" namespace="%s" name="%s" runtime="%s" cores="%d">\n' % (j.id, j.namespace, j.name, j.runtime, j.cores))
             for i in j.inputs:
-                f.write('\t\t<uses file="%s" link="input" size="%s"/>\n' % (i.name, i.size))
+                f.write('\t\t<uses file="%s" link="input" size="%d"/>\n' % (i.name, i.size))
             for o in j.outputs:
-                f.write('\t\t<uses file="%s" link="output" size="%s"/>\n' % (o.name, o.size))
+                f.write('\t\t<uses file="%s" link="output" size="%d"/>\n' % (o.name, o.size))
             f.write('\t</job>\n')
         
         for j in self.jobs:
@@ -145,7 +145,7 @@ if __name__ == '__main__':
     inp = File(name="bar.in", size=1024)
     outp = File(name="bar.out", size=1024)
     
-    j = Job(id="foo1", namespace="foo", name="bar", runtime=1024, inputs=[inp], outputs=[outp])
+    j = Job(id="foo1", namespace="foo", name="bar", runtime=102.4, inputs=[inp], outputs=[outp])
     w.addJob(j)
     
     j2 = Job(id="foo2", namespace="foo", name="bar", runtime=1024, inputs=[outp], parents=[j])
