@@ -35,3 +35,6 @@ if __name__ == '__main__':
     import cadsr
     cadsr.main("cadsr.dax")
     
+    import psload
+    psload.main("psload.dax")
+
