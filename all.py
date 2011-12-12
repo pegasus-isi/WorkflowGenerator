@@ -29,3 +29,5 @@ if __name__ == '__main__':
     import molsci
     molsci.main("molsci.dax")
     
+    import avianflu
+    avianflu.main("avianflu.dax")
