@@ -20,3 +20,6 @@ if __name__ == '__main__':
     import gene2life
     gene2life.main("gene2life.dax")
     
+    import motif
+    motif.main("motif.dax")
+    
