@@ -1,6 +1,6 @@
 from workflow import *
 
-def main(file, N):
+def main(file, N=5):
     """Southeastern Coastal Ocean Observing and Prediction Program (SCOOP) workflow (Figure 4 in Ramakrishnan and Gannon)"""
     w = Workflow()
     
@@ -24,7 +24,7 @@ def main(file, N):
     sc = Job(id="sc", namespace="scoop", name="PostProcessing", runtime=1*SECONDS, parents=parents, inputs=outputs)
     w.addJob(sc)
     
-    w.write(file)
+    w.writeDAX(file)
 
 if __name__ == '__main__':
     main("/dev/stdout", 5)

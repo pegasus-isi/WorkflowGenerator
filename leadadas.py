@@ -36,7 +36,7 @@ def main(file):
     wrf.addParent(arps2wrf)
     w.addJob(wrf)
     
-    w.write(file)
+    w.writeDAX(file)
 
 if __name__ == '__main__':
     main("/dev/stdout")

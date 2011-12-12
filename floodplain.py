@@ -37,7 +37,7 @@ def main(file):
     adcirc2 = Job(id="adcirc2", namespace="floodplain", name="Adcirc", runtime=4.5*HOURS, cores=256, parents=[sis, sin], inputs=[adcirc2in, sisout, sinout], outputs=[adcirc2out])
     w.addJob(adcirc2)
     
-    w.write(file)
+    w.writeDAX(file)
 
 if __name__ == '__main__':
     main("/dev/stdout")

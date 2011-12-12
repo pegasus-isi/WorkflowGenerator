@@ -47,7 +47,7 @@ class Workflow:
     def addJob(self, job):
         self.jobs.add(job)
     
-    def write(self, filename):
+    def writeDAX(self, filename):
         f = open(filename, "w")
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         f.write('<adag>\n')
@@ -69,6 +69,9 @@ class Workflow:
         
         f.write('</adag>')
         f.close()
+    
+    def writeDOT(self, filename):
+        raise Exception("Not implemented")
 
 if __name__ == '__main__':
     w = Workflow()

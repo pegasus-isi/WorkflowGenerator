@@ -22,7 +22,7 @@ def main(file):
     sc = Job(id="sc", namespace="leaddm", name="SpatialClustering", runtime=129*SECONDS, parents=[ra], inputs=[raout1], outputs=[scout1, scout2])
     w.addJob(sc)
     
-    w.write(file)
+    w.writeDAX(file)
 
 if __name__ == '__main__':
     main("/dev/stdout")
