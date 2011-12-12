@@ -40,4 +40,6 @@ if __name__ == '__main__':
     
     import psmerge
     psmerge.main("psmerge.dax")
-
+    
+    import mcstats
+    mcstats.main("mcstats.dax")
