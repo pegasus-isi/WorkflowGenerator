@@ -81,7 +81,7 @@ class Workflow:
                         j.addParent(k)
     
     def writeDAX(self, filename):
-        childCount = reduce(lambda x,y: x+y, [1 for x in self.jobs if len(x.parents)>0])
+        childCount = reduce(lambda x,y: x+y, [1 for x in self.jobs if len(x.parents)>0], 0)
         jobCount = len(self.jobs)
         
         f = open(filename, "w")
