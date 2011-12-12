@@ -37,4 +37,7 @@ if __name__ == '__main__':
     
     import psload
     psload.main("psload.dax")
+    
+    import psmerge
+    psmerge.main("psmerge.dax")
 
