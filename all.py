@@ -31,3 +31,7 @@ if __name__ == '__main__':
     
     import avianflu
     avianflu.main("avianflu.dax")
+    
+    import cadsr
+    cadsr.main("cadsr.dax")
+    
