@@ -26,3 +26,6 @@ if __name__ == '__main__':
     import mememast
     mememast.main("mememast.dax")
     
+    import molsci
+    molsci.main("molsci.dax")
+    
