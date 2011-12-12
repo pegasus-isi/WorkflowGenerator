@@ -1,14 +1,22 @@
 if __name__ == '__main__':
     import leadmm
-    import leadadas
-    import leaddm
-    import scoop
-    import floodplain
-    import glimmer
-    
     leadmm.main("leadmm.dax")
+    
+    import leadadas
     leadadas.main("leadadas.dax")
+    
+    import leaddm
     leaddm.main("leaddm.dax")
+    
+    import scoop
     scoop.main("scoop.dax")
+    
+    import floodplain
     floodplain.main("floodplain.dax")
+    
+    import glimmer
     glimmer.main("glimmer.dax")
+    
+    import gene2life
+    gene2life.main("gene2life.dax")
+    
