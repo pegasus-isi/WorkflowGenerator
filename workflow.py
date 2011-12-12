@@ -72,6 +72,14 @@ class Workflow:
     def addJob(self, job):
         self.jobs.add(job)
     
+    def computeDataDependencies(self):
+        """This sets all the parent-child dependencies based on the input and output files of the jobs"""
+        for j in self.jobs:
+            for i in j.inputs:
+                for k in self.jobs:
+                    if i in k.outputs:
+                        j.addParent(k)
+    
     def writeDAX(self, filename):
         childCount = reduce(lambda x,y: x+y, [1 for x in self.jobs if len(x.parents)>0])
         jobCount = len(self.jobs)
