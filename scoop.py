@@ -1,8 +1,7 @@
 from workflow import *
 
 def main(file, N=5):
-    """Southeastern Coastal Ocean Observing and Prediction Program (SCOOP) workflow (Figure 4 in Ramakrishnan and Gannon)"""
-    w = Workflow()
+    w = Workflow(name="scoop", description="""Southeastern Coastal Ocean Observing and Prediction Program (SCOOP) workflow (Figure 4 in Ramakrishnan and Gannon)""")
     
     inputs = []
     outputs = []

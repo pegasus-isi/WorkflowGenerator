@@ -1,8 +1,7 @@
 from workflow import *
 
 def main(file):
-    """Floodplain Mapping workflow (Figure 5 in Ramakrishnan and Gannon)"""
-    w = Workflow()
+    w = Workflow(name="floodplain", description="""Floodplain Mapping workflow (Figure 5 in Ramakrishnan and Gannon)""")
     
     adcircin = File("adcirc_in.dat", size=534*MB)
     adcircout = File("adcirc_out.dat", size=21527*MB)

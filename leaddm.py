@@ -1,8 +1,7 @@
 from workflow import *
 
 def main(file):
-    """LEAD Data Mining workflow (Figure 3 in Ramakrishnan and Gannon)"""
-    w = Workflow()
+    w = Workflow(name="leaddm", description="""LEAD Data Mining workflow (Figure 3 in Ramakrishnan and Gannon)""")
     
     sdin1 = File(name="sd_in1.dat", size=1*KB)
     sdin2 = File(name="sd_in2.dat", size=2*MB)

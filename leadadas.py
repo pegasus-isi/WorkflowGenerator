@@ -1,8 +1,7 @@
 from workflow import *
 
 def main(file):
-    """LEAD ARPS Data Analysis System (ADAS) workflow (Figure 2 in Ramakrishnan and Gannon)"""
-    w = Workflow()
+    w = Workflow(name="leadadas", description="""LEAD ARPS Data Analysis System (ADAS) workflow (Figure 2 in Ramakrishnan and Gannon)""")
     
     infile = File(name="input.txt", size=147*MB)
     

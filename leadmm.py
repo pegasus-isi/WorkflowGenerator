@@ -1,8 +1,7 @@
 from workflow import *
 
 def main(file):
-    """LEAD Mesoscale Meterology workflow (Figure 1 in Ramakrishnan and Gannon)"""
-    w = Workflow()
+    w = Workflow(name="leadmm", description="""LEAD Mesoscale Meterology workflow (Figure 1 in Ramakrishnan and Gannon)""")
     
     infile = File(name="input.txt", size=147*MB)
     

@@ -40,17 +40,22 @@ class Job:
         return "<Job %s>" % self.name
 
 class Workflow:
-    def __init__(self):
+    def __init__(self, name=None, description=None):
+        self.name = name
+        self.description = description
         self.jobs = set()
-        self.edges = set()
     
     def addJob(self, job):
         self.jobs.add(job)
     
     def writeDAX(self, filename):
+        childCount = reduce(lambda x,y: x+y, [1 for x in self.jobs if len(x.parents)>0])
+        jobCount = len(self.jobs)
+        
         f = open(filename, "w")
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-        f.write('<adag>\n')
+        f.write('<!-- %s -->\n' % (self.description))
+        f.write('<adag name="%s" jobCount="%d" fileCount="0" childCount="%d">\n' % (self.name, jobCount, childCount))
         
         for j in self.jobs:
             f.write('\t<job id="%s" namespace="%s" name="%s" runtime="%s" cores="%s">\n' % (j.id, j.namespace, j.name, j.runtime, j.cores))
@@ -74,7 +79,7 @@ class Workflow:
         raise Exception("Not implemented")
 
 if __name__ == '__main__':
-    w = Workflow()
+    w = Workflow(name="Test", description="""Test Workflow""")
     
     inp = File(name="bar.in", size=1024)
     outp = File(name="bar.out", size=1024)
@@ -85,4 +90,4 @@ if __name__ == '__main__':
     j2 = Job(id="foo2", namespace="foo", name="bar", runtime=1024, inputs=[outp], parents=[j])
     w.addJob(j2)
     
-    w.write("/dev/stdout")
+    w.writeDAX("/dev/stdout")
