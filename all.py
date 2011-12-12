@@ -23,3 +23,6 @@ if __name__ == '__main__':
     import motif
     motif.main("motif.dax")
     
+    import mememast
+    mememast.main("mememast.dax")
+    
