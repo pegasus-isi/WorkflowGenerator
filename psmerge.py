@@ -28,6 +28,7 @@ def psmerge(N=16, nlow=300, nhigh=600):
             merge = Job(id="merge%d.%d"%(i,j), namespace="psmerge", name="MergeDB", runtime=3*HOURS, inputs=[mergein1, mergein2], outputs=[mergeout])
             w.addJob(merge)
             
+            validate.addInput(mergeout)
             preprocess.addOutput(mergein1)
     
     return w
