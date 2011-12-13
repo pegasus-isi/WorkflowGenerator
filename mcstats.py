@@ -14,7 +14,6 @@ def main(file):
     mcsts = Job(id="mcsts", namespace="mcstats", name="McSts", runtime=3*HOURS, cores=128, inputs=[nmoldynout])
     w.addJob(mcsts)
     
-    w.computeDataDependencies()
     w.writeDAX(file)
 
 if __name__ == '__main__':

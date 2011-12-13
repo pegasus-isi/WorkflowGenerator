@@ -41,7 +41,6 @@ def main(file):
     drawgram2 = Job(id="drawgram2", namespace="gene2life", name="drawgram", runtime=30*SECONDS, inputs=[protparsout], outputs=[drawgram2out])
     w.addJob(drawgram2)
     
-    w.computeDataDependencies()
     w.writeDAX(file)
 
 if __name__ == '__main__':

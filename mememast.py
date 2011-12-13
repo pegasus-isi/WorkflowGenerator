@@ -13,7 +13,6 @@ def main(file):
     mast = Job(id="mast", namespace="mememast", name="MAST", runtime=60*SECONDS, inputs=[memeout], outputs=[mastout])
     w.addJob(mast)
     
-    w.computeDataDependencies()
     w.writeDAX(file)
 
 if __name__ == '__main__':

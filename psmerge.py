@@ -18,17 +18,15 @@ def main(file, N=16, nlo=300, nhi=600):
         w.addJob(validate)
         
         update.addInput(validateout)
-        update.addParent(validate)
         
         for j in range(1,random.randint(nlo,nhi)+1):
             mergein1 = File(name="merge%d.%d_in1.dat"%(i,j), size=100*MB)
             mergein2 = File(name="merge%d.%d_in2.dat"%(i,j), size=2*TB)
             mergeout = File(name="merge%d.%d_out.dat"%(i,j), size=2*TB)
-            merge = Job(id="merge%d.%d"%(i,j), namespace="psmerge", name="MergeDB", runtime=3*HOURS, parents=[preprocess], inputs=[mergein1, mergein2], outputs=[mergeout])
+            merge = Job(id="merge%d.%d"%(i,j), namespace="psmerge", name="MergeDB", runtime=3*HOURS, inputs=[mergein1, mergein2], outputs=[mergeout])
             w.addJob(merge)
             
             preprocess.addOutput(mergein1)
-            validate.addParent(merge)
     
     w.writeDAX(file)
 

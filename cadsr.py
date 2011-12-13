@@ -20,7 +20,6 @@ def main(file):
     search = Job(id="searchLogicConcept", namespace="cadsr", name="searchLogicConcept", runtime=5*SECONDS, inputs=[metadataout], outputs=[searchout])
     w.addJob(search)
     
-    w.computeDataDependencies()
     w.writeDAX(file)
 
 if __name__ == '__main__':

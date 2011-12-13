@@ -13,12 +13,12 @@ def main(file):
     w.addJob(sd)
     
     raout1 = File(name="ra_out1.dat", size=1*KB)
-    ra = Job(id="ra", namespace="leaddm", name="RemoveAttributes", runtime=66*SECONDS, parents=[sd], inputs=[sdout2], outputs=[raout1])
+    ra = Job(id="ra", namespace="leaddm", name="RemoveAttributes", runtime=66*SECONDS, inputs=[sdout2], outputs=[raout1])
     w.addJob(ra)
     
     scout1 = File(name="sc_out1.dat", size=5*KB)
     scout2 = File(name="sc_out2.dat", size=9*KB)
-    sc = Job(id="sc", namespace="leaddm", name="SpatialClustering", runtime=129*SECONDS, parents=[ra], inputs=[raout1], outputs=[scout1, scout2])
+    sc = Job(id="sc", namespace="leaddm", name="SpatialClustering", runtime=129*SECONDS, inputs=[raout1], outputs=[scout1, scout2])
     w.addJob(sc)
     
     w.writeDAX(file)

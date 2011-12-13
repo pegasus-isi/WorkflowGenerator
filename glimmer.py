@@ -20,7 +20,6 @@ def main(file):
     glimmer2 = Job(id="glimmer2", namespace="glimmer", name="glimmer2", runtime=90*SECONDS, inputs=[icmout], outputs=[glimmerout])
     w.addJob(glimmer2)
     
-    w.computeDataDependencies()
     w.writeDAX(file)
 
 if __name__ == '__main__':

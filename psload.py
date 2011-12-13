@@ -15,7 +15,6 @@ def main(file, N=800, n=5):
         validateout = File(name="validate%d_out.dat"%i, size=100*MB)
         validate = Job(id="validate%d"%i, namespace="psload", name="ValidateLoadDB", runtime=5*SECONDS, outputs=[validateout])
         w.addJob(validate)
-        end.addParent(validate)
         end.addInput(validateout)
         
         for j in range(1,random.randint(1,n)+1):
@@ -23,12 +22,11 @@ def main(file, N=800, n=5):
             totalsize += size
             loadin = File(name="load%d.%d_in.dat"%(i,j), size=size)
             loadout = File(name="load%d.%d_out.dat"%(i,j), size=size)
-            load = Job(id="load%d.%d"%(i,j), namespace="psload", name="LoadCSV", runtime=30*SECONDS, parents=[preprocess], inputs=[loadin], outputs=[loadout])
+            load = Job(id="load%d.%d"%(i,j), namespace="psload", name="LoadCSV", runtime=30*SECONDS, inputs=[loadin], outputs=[loadout])
             w.addJob(load)
             
             preprocess.addOutput(loadin)
             validate.addInput(loadout)
-            validate.addParent(load)
         
         indata = File(name="preprocess%d_in.dat"%i, size=totalsize)
         preprocess.addInput(indata)
@@ -36,4 +34,4 @@ def main(file, N=800, n=5):
     w.writeDAX(file)
 
 if __name__ == '__main__':
-    main("/dev/stdout", 10)
+    main("/dev/stdout", 50, 5)

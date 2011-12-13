@@ -25,7 +25,6 @@ def main(file):
     apbs = Job(id="apbs", namespace="molsci", name="APBS", runtime=10*MINUTES, inputs=[gamessout, pqrout], outputs=[apbsout])
     w.addJob(apbs)
     
-    w.computeDataDependencies()
     w.writeDAX(file)
 
 if __name__ == '__main__':

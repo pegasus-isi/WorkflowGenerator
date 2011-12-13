@@ -72,15 +72,27 @@ class Workflow:
     def addJob(self, job):
         self.jobs.add(job)
     
-    def computeDataDependencies(self):
+    def _computeDataDependencies(self):
         """This sets all the parent-child dependencies based on the input and output files of the jobs"""
+        # Prepare a mapping of file -> job that generated it
+        sources = {}
+        for j in self.jobs:
+            for k in j.outputs:
+                if k in sources:
+                    raise Exception("Duplicate source for %s" % k)
+                sources[k] = j
+        
+        # Use source mapping to look up the job that produces 
+        # each input for every job, and make the job dependent
+        # upon it.
         for j in self.jobs:
             for i in j.inputs:
-                for k in self.jobs:
-                    if i in k.outputs:
-                        j.addParent(k)
+                if i in sources:
+                    j.addParent(sources[i])
     
     def writeDAX(self, filename):
+        self._computeDataDependencies()
+        
         childCount = reduce(lambda x,y: x+y, [1 for x in self.jobs if len(x.parents)>0], 0)
         jobCount = len(self.jobs)
         
@@ -108,6 +120,8 @@ class Workflow:
         f.close()
     
     def writeDOT(self, filename, width=8.0, height=10.0):
+        self._computeDataDependencies()
+        
         next_color = 0  # Keep track of next color
         xforms = {} # Keep track of transformation names to assign colors
         

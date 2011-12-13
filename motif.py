@@ -24,7 +24,6 @@ def main(file, N=135):
     motifout = File(name="motif_out.dat", size=1432*MB)
     motif = Job(id="motif", namespace="motif", name="Motif", runtime=3600*SECONDS, cores=256, inputs=[postout1], outputs=[motifout])
     
-    w.computeDataDependencies()
     w.writeDAX(file)
 
 if __name__ == '__main__':
