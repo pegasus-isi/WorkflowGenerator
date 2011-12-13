@@ -24,7 +24,7 @@ def leadadas():
     w.addJob(ai)
     
     wrf_dat = File("wrf.dat", size=206*MB)
-    arps2wrf = Job(id="arps2wrf", namespace="leadadas", name="ARPS2WRF", runtime=78*SECONDS, inputs=[lbio1, aio1], outputs=[wrf_dat])
+    arps2wrf = Job(id="arps2wrf", namespace="leadadas", name="ARPS2WRF", runtime=78*SECONDS, inputs=[lbio1, aio1, wrfstatico1], outputs=[wrf_dat])
     w.addJob(arps2wrf)
     
     wrf_out = File("wrf.dat.out", size=2422*MB)

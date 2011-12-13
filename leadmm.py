@@ -24,7 +24,7 @@ def leadmm():
     w.addJob(tdi)
     
     wrf_dat = File("wrf.dat", size=206*MB)
-    arps2wrf = Job(id="arps2wrf", namespace="leadmm", name="ARPS2WRF", runtime=78*SECONDS, inputs=[lbio1, tdio1], outputs=[wrf_dat])
+    arps2wrf = Job(id="arps2wrf", namespace="leadmm", name="ARPS2WRF", runtime=78*SECONDS, inputs=[wrfstatico1, lbio1, tdio1], outputs=[wrf_dat])
     w.addJob(arps2wrf)
     
     wrf_out = File("wrf.dat.out", size=2422*MB)
