@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file):
+def cadsr():
     w = Workflow(name="cadsr", description="""Cancer Data Standards Repository workflow (Figure 12 in Ramakrishnan and Gannon)""")
     
     projectsin = File(name="projects_in.dat", size=10*MB)
@@ -20,7 +22,14 @@ def main(file):
     search = Job(id="searchLogicConcept", namespace="cadsr", name="searchLogicConcept", runtime=5*SECONDS, inputs=[metadataout], outputs=[searchout])
     w.addJob(search)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class CaDSR(Main):
+        def genworkflow(self, options):
+            return cadsr()
+    
+    CaDSR().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

@@ -1,7 +1,9 @@
 import random
+import sys
+from main import Main
 from workflow import *
 
-def main(file, N=800, n=5):
+def psload(N=800, n=5):
     w = Workflow(name="psload", description="""Pan-STARRS database loading workflow (Figure 13 in Ramakrishnan and Gannon)""")
     
     end = Job(id="end", namespace="psload", name="End", runtime=10*SECONDS)
@@ -31,7 +33,20 @@ def main(file, N=800, n=5):
         indata = File(name="preprocess%d_in.dat"%i, size=totalsize)
         preprocess.addInput(indata)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class PSLoad(Main):
+        def setoptions(self, parser):
+            self.parser.add_option("-N", "--numpreprocess", dest="N", metavar="N", type="int", default=800,
+                help="Number of preprocess jobs [default: %default]")
+            self.parser.add_option("-n", "--numload", dest="n", metavar="n", type="int", default=5,
+                help="Maximum number of load jobs per preprocess job  [default: %default] (range is 1 to n)")
+        
+        def genworkflow(self, options):
+            return psload(options.N, options.n)
+    
+    PSLoad().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout", 50, 5)
+    main(*sys.argv[1:])

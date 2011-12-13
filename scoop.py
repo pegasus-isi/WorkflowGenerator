@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file, N=5):
+def scoop(N=5):
     w = Workflow(name="scoop", description="""Southeastern Coastal Ocean Observing and Prediction Program (SCOOP) workflow (Figure 4 in Ramakrishnan and Gannon)""")
     
     # The runtime, cores and outputs are not specified in the paper
@@ -15,7 +17,18 @@ def main(file, N=5):
         
         pp.addInput(adcircout)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class SCOOP(Main):
+        def setoptions(self, parser):
+            self.parser.add_option("-N", "--num", dest="N", metavar="N", type="int", default=5, 
+                help="Number of Adcirc jobs [default: %default]")
+        
+        def genworkflow(self, options):
+            return scoop(options.N)
+    
+    SCOOP().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout", 5)
+    main(*sys.argv[1:])

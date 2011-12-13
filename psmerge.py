@@ -1,7 +1,9 @@
 import random
+import sys
+from main import Main
 from workflow import *
 
-def main(file, N=16, nlo=300, nhi=600):
+def psmerge(N=16, nlow=300, nhigh=600):
     w = Workflow(name="psmerge", description="""Pan-STARRS database merging workflow (Figure 14 in Ramakrishnan and Gannon)""")
     
     update = Job(id="update", namespace="psmerge", name="UpdateProductionDB", runtime=1*HOURS)
@@ -19,7 +21,7 @@ def main(file, N=16, nlo=300, nhi=600):
         
         update.addInput(validateout)
         
-        for j in range(1,random.randint(nlo,nhi)+1):
+        for j in range(1,random.randint(nlow,nhigh)+1):
             mergein1 = File(name="merge%d.%d_in1.dat"%(i,j), size=100*MB)
             mergein2 = File(name="merge%d.%d_in2.dat"%(i,j), size=2*TB)
             mergeout = File(name="merge%d.%d_out.dat"%(i,j), size=2*TB)
@@ -28,7 +30,22 @@ def main(file, N=16, nlo=300, nhi=600):
             
             preprocess.addOutput(mergein1)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class PSMerge(Main):
+        def setoptions(self, parser):
+            self.parser.add_option("-N", "--numpreprocess", dest="N", metavar="N", type="int", default=16,
+                help="Number of preprocess jobs [default: %default]")
+            self.parser.add_option("-L", "--nlow", dest="nlow", metavar="L", type="int", default=300,
+                help="Minimum number of merge jobs per preprocess job  [default: %default] (range is L to H)")
+            self.parser.add_option("-H", "--nhigh", dest="nhigh", metavar="H", type="int", default=600,
+                help="Minimum number of merge jobs per preprocess job  [default: %default] (range is L to H)")
+        
+        def genworkflow(self, options):
+            return psmerge(options.N, options.nlow, options.nhigh)
+    
+    PSMerge().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout",2,1,10)
+    main(*sys.argv[1:])

@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file):
+def leaddm():
     w = Workflow(name="leaddm", description="""LEAD Data Mining workflow (Figure 3 in Ramakrishnan and Gannon)""")
     
     sdin1 = File(name="sd_in1.dat", size=1*KB)
@@ -21,7 +23,14 @@ def main(file):
     sc = Job(id="sc", namespace="leaddm", name="SpatialClustering", runtime=129*SECONDS, inputs=[raout1], outputs=[scout1, scout2])
     w.addJob(sc)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class LEADDM(Main):
+        def genworkflow(self, options):
+            return leaddm()
+    
+    LEADDM().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

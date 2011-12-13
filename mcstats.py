@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file):
+def mcstats():
     w = Workflow(name="mcstats", description="""McStats neutron ray tracing workflow (Figure 15 in Ramakrishnan and Gannon)""")
     
     vaspout = File(name="vasp_out.dat", size=0.56*MB)
@@ -14,7 +16,14 @@ def main(file):
     mcsts = Job(id="mcsts", namespace="mcstats", name="McSts", runtime=3*HOURS, cores=128, inputs=[nmoldynout])
     w.addJob(mcsts)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class McStats(Main):
+        def genworkflow(self, options):
+            return mcstats()
+    
+    McStats().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file, N=135):
+def motif(N=135):
     w = Workflow(name="motif", description="""MotifNetwork bioinformatics workflow (Figure 8 in Ramakrishnan and Gannon)""")
     
     wfin = File(name="wf_in.dat", size=13*MB)
@@ -23,8 +25,20 @@ def main(file, N=135):
     
     motifout = File(name="motif_out.dat", size=1432*MB)
     motif = Job(id="motif", namespace="motif", name="Motif", runtime=3600*SECONDS, cores=256, inputs=[postout1], outputs=[motifout])
+    w.addJob(motif)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class Motif(Main):
+        def setoptions(self, parser):
+            self.parser.add_option("-N", "--numscan", dest="N", metavar="N", type="int", default=135, 
+                help="Number of interproscan jobs [default: %default]")
+        
+        def genworkflow(self, options):
+            return motif(options.N)
+    
+    Motif().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

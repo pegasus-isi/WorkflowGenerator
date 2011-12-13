@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file, N=1000):
+def avianflu(N=1000):
     w = Workflow(name="avianflu", description="""Avian Flu drug design workflow (Figure 11 in Ramakrishnan and Gannon)""")
     
     wfin = File(name="input1.dat", size=150*KB)
@@ -23,7 +25,18 @@ def main(file, N=1000):
         
         autogrid.addOutput(autodockin1)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class AvianFlu(Main):
+        def setoptions(self, parser):
+            self.parser.add_option("-N", "--numdock", dest="N", metavar="N", type="int", default=1000, 
+                help="Number of AutoDock jobs [default: %default]")
+        
+        def genworkflow(self, options):
+            return avianflu(options.N)
+    
+    AvianFlu().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

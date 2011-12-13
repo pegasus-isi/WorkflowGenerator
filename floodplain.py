@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file):
+def floodplain():
     w = Workflow(name="floodplain", description="""Floodplain Mapping workflow (Figure 5 in Ramakrishnan and Gannon)""")
     
     adcircin = File("adcirc_in.dat", size=534*MB)
@@ -36,7 +38,14 @@ def main(file):
     adcirc2 = Job(id="adcirc2", namespace="floodplain", name="Adcirc", runtime=4.5*HOURS, cores=256, inputs=[adcirc2in, sisout, sinout], outputs=[adcirc2out])
     w.addJob(adcirc2)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class Floodplain(Main):
+        def genworkflow(self, options):
+            return floodplain()
+    
+    Floodplain().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

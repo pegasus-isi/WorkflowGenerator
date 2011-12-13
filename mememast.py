@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file):
+def mememast():
     w = Workflow(name="mememast", description="""MEME-MAST bioinformatics workflow (Figure 9 in Ramakrishnan and Gannon)""")
     
     memein = File(name="meme_in.dat", size=100*KB)
@@ -13,7 +15,14 @@ def main(file):
     mast = Job(id="mast", namespace="mememast", name="MAST", runtime=60*SECONDS, inputs=[memeout], outputs=[mastout])
     w.addJob(mast)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class MEMEMAST(Main):
+        def genworkflow(self, options):
+            return mememast()
+    
+    MEMEMAST().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

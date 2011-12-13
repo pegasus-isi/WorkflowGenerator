@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file):
+def leadmm():
     w = Workflow(name="leadmm", description="""LEAD Mesoscale Meterology workflow (Figure 1 in Ramakrishnan and Gannon)""")
     
     infile = File(name="input.txt", size=147*MB)
@@ -29,7 +31,14 @@ def main(file):
     wrf = Job(id="wrf", namespace="leadmm", name="WRF", runtime=4570*SECONDS, cores=16, inputs=[wrf_dat], outputs=[wrf_out])
     w.addJob(wrf)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class LEADMM(Main):
+        def genworkflow(self, options):
+            return leadmm()
+    
+    LEADMM().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

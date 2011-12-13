@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file):
+def molsci():
     w = Workflow(name="molsci", description="""Molecular Sciences workflow (Figure 10 in Ramakrishnan and Gannon)""")
     
     babelin = File(name="babel_in.dat", size=100*KB)
@@ -25,7 +27,14 @@ def main(file):
     apbs = Job(id="apbs", namespace="molsci", name="APBS", runtime=10*MINUTES, inputs=[gamessout, pqrout], outputs=[apbsout])
     w.addJob(apbs)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class MolSci(Main):
+        def genworkflow(self, options):
+            return molsci()
+    
+    MolSci().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file):
+def gene2life():
     w = Workflow(name="gene2life", description="""Gene2Life bioinformatics workflow (Figure 7 in Ramakrishnan and Gannon)""")
     
     wfin = File(name="wf_in.dat", size=0.1*MB)
@@ -41,7 +43,14 @@ def main(file):
     drawgram2 = Job(id="drawgram2", namespace="gene2life", name="drawgram", runtime=30*SECONDS, inputs=[protparsout], outputs=[drawgram2out])
     w.addJob(drawgram2)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class Gene2Life(Main):
+        def genworkflow(self, options):
+            return gene2life()
+    
+    Gene2Life().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])

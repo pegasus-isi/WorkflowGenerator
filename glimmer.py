@@ -1,6 +1,8 @@
+import sys
+from main import Main
 from workflow import *
 
-def main(file):
+def glimmer():
     w = Workflow(name="glimmer", description="""Glimmer bioinformatics workflow (Figure 6 in Ramakrishnan and Gannon)""")
     
     orfin = File(name="orf_in.dat", size=8.8*MB)
@@ -20,7 +22,14 @@ def main(file):
     glimmer2 = Job(id="glimmer2", namespace="glimmer", name="glimmer2", runtime=90*SECONDS, inputs=[icmout], outputs=[glimmerout])
     w.addJob(glimmer2)
     
-    w.writeDAX(file)
+    return w
+
+def main(*args):
+    class Glimmer(Main):
+        def genworkflow(self, options):
+            return glimmer()
+    
+    Glimmer().main(*args)
 
 if __name__ == '__main__':
-    main("/dev/stdout")
+    main(*sys.argv[1:])
