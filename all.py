@@ -13,7 +13,7 @@ if __name__ == '__main__':
     import cadsr
     import psload
     import psmerge
-    import mcstats
+    import mcstas
     
     # DAX files
     leadmm.main("-D", "leadmm.dax")
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     mememast.main("-D", "mememast.dax")
     molsci.main("-D", "molsci.dax")
     cadsr.main("-D", "cadsr.dax")
-    mcstats.main("-D", "mcstats.dax")
+    mcstas.main("-D", "mcstas.dax")
     motif.main("-D", "motif_small.dax", "-N", "10")
     motif.main("-D", "motif_medium.dax", "-N", "135")
     motif.main("-D", "motif_large.dax", "-N", "500")
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     mememast.main("-d", "mememast.dot")
     molsci.main("-d", "molsci.dot")
     cadsr.main("-d", "cadsr.dot")
-    mcstats.main("-d", "mcstats.dot")
+    mcstas.main("-d", "mcstas.dot")
     motif.main("-d", "motif.dot", "-N", "3")
     psload.main("-d", "psload.dot", "-N", "2", "-n", "3")
     psmerge.main("-d", "psmerge.dot", "-N", "2", "-L", "3", "-H", "3")
