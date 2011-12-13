@@ -1,0 +1,58 @@
+This project contains workflow DAX generators for all of the workflows in 
+the Ramakrishnan and Gannon report:
+
+    L. Ramakrishnan and D. Gannon, "A Survey of Distributed Workflow 
+    Characteristics and Resource Requirements", University of Indiana 
+    Technical Report TR671, 2008.
+
+The report can be downloaded here:
+
+    http://www.cs.indiana.edu/cgi-bin/techreports/TRNNN.cgi?trnum=TR671
+
+There are 15 workflows in total. The names of the workflows scripts are:
+    avianflu.py
+    cadsr.py
+    floodplain.py
+    gene2life.py
+    glimmer.py
+    leadadas.py
+    leaddm.py
+    leadmm.py
+    mcstas.py
+    mememast.py
+    molsci.py
+    motif.py
+    psload.py
+    psmerge.py
+    scoop.py
+
+To generate a workflow, simply run the script associated with the workflow.
+For example, to generate the leaddm workflow run:
+
+    python leaddm.py -D leaddm.xml
+
+That will write the lead workflow into the leaddm.xml DAX file.
+
+If you run a workflow script with a '-h' argument you will get a help message
+that describes all the parameters.
+
+There are 5 workflows that take parameters to specify the number of jobs.
+These workflows are:
+
+    scoop.py
+    motif.py
+    avianflu.py
+    psload.py
+    psmerge.py
+
+Typically these workflows take a -N argument that defines a branching factor
+in the workflow. Some of the parameterized workflows have ranges for 
+generating random numbers of jobs. The other workflows have a fixed number of 
+jobs.
+
+The 'all.py' script generates the DAX files that are posted on the web page, 
+along with some DOT scripts that were used to generate the figures on the
+web page.
+
+The 'workflow.py' script is the base script for generating and writing
+workflows. 'main.py' has code for parsing common command-line arguments.
