@@ -14,6 +14,7 @@ def motif(N=135):
     postout2 = File(name="post_out2.dat", size=599*MB)
     postout3 = File(name="post_out3.dat", size=599*MB)
     post = Job(id="post", namespace="motif", name="Post Interproscan", runtime=60*SECONDS, outputs=[postout1, postout2, postout3])
+    w.addJob(post)
     
     for i in range(1, N+1):
         scanin = File(name="scan_in%d.dat"%i, size=100*KB)
