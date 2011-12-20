@@ -1,0 +1,33 @@
+This is a synthetic workflow generator that generates workflows based on real
+applications or generic shapes.
+
+The main classes are:
+
+    simulation.generator.AppGenerator   - Generates application DAXes.
+    simulation.generator.ShapeGenerator - Generates random DAXes with various
+                                          shapes.
+    simulation.generator.RunAll         - Generates application DAXes in several
+                                          different sizes and writes them to
+                                          files in the current directory.
+
+The application DAXes supported are:
+
+    CYBERSHAKE
+    MONTAGE
+    SIPHT
+    LIGO
+    GENOME
+
+The workflows generated for these applications use statistical distributions of
+file size, workflow structure, and runtime that were derived from real workflows
+used by the application.
+
+For more information contact the Pegasus users mailing list:
+    
+    http://mailman.isi.edu/mailman/listinfo/pegasus-users
+    
+Alternatively, you can email the Pegasus team directly at:
+    
+    pegasus-support@isi.edu
+
+This code was written by Shishir Bharathi and updated by Gideon Juve.
