@@ -134,6 +134,7 @@ public class SIPHT extends AbstractApplication {
         this.distributions.put("Patser", Distribution.getTruncatedNormalDistribution(1.27, 0.11));
         this.distributions.put("Patser_concate", Distribution.getTruncatedNormalDistribution(0.08, 0.01));
         this.distributions.put("SRNA_annotate", Distribution.getTruncatedNormalDistribution(1.68, 0.92));
+        this.distributions.put("Blast_synteny", Distribution.getConstantDistribution(33.0));
     }
 
     private void usage(int exitCode) {
@@ -248,9 +249,6 @@ public class SIPHT extends AbstractApplication {
         bq.addChild(srnaAnnotate);
         bs.addChild(srnaAnnotate);
         bp.addChild(srnaAnnotate);
-
-        LastTransfer lt = new LastTransfer(this, "Last_transfer", "1.0", getNewJobID());
-        srnaAnnotate.addChild(lt);
     }
 }
 
@@ -260,7 +258,7 @@ class Findterm extends AppJob {
         super(sipht, SIPHT.NAMESPACE, name, version, jobID);
         input(SIPHT.CODE + ".fna", sipht.generateLong("CODE.fna"));
         input("RNAfold", sipht.generateLong("RNAfold"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("Findterm") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("Findterm") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -283,7 +281,7 @@ class RNAMotif extends AppJob {
         super(sipht, SIPHT.NAMESPACE, name, version, jobID);
         input(SIPHT.CODE + ".fna", sipht.generateLong("CODE.fna"));
         input("RNAMofficial_descriptor.txt", sipht.generateLong("RNAMofficial_descriptor.txt"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("RNAMotif") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("RNAMotif") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -301,7 +299,7 @@ class Transterm extends AppJob {
         input(SIPHT.CODE + ".fna", sipht.generateLong("CODE.fna"));
         input("expterm.dat", sipht.generateLong("expterm.dat"));
         input(SIPHT.CODE + ".ptt", sipht.generateLong("CODE.ptt"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("Transterm") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("Transterm") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -330,7 +328,7 @@ class Blast extends AppJob {
         }
         output("blast.err", sipht.generateLong("blast.err"));
 
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("Blast") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("Blast") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -352,7 +350,7 @@ class Patser extends AppJob {
         input(SIPHT.CODE + ".fna", sipht.generateLong("CODE.fna"));
         input("alphabet", sipht.generateLong("alphabet"));
         input(jobID + "_matrix.txt", sipht.generateLong("matrix"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("Patser") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("Patser") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -366,7 +364,7 @@ class PatserConcate extends AppJob {
 
     public PatserConcate(SIPHT sipht, String name, String version, String jobID) {
         super(sipht, SIPHT.NAMESPACE, name, version, jobID);
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("Patser_concate") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("Patser_concate") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -402,7 +400,7 @@ class SRNA extends AppJob {
         output("OutTerm_temp", sipht.generateLong("OutTerm_temp"));
         output("OutTerms", sipht.generateLong("OutTerms"));
         output("OutTermsIG", sipht.generateLong("OutTermsIG"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("SRNA") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("SRNA") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -420,7 +418,7 @@ class FFNParse extends AppJob {
         input(SIPHT.CODE + ".ffn", sipht.generateLong("CODE.ffn"));
         input(SIPHT.CODE + ".ptt", sipht.generateLong("CODE.ptt"));
         input("Seq_" + SIPHT.CODE, sipht.generateLong("Seq_CODE"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("FFN_parse") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("FFN_parse") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -437,7 +435,7 @@ class BlastCandidate extends AppJob {
         input("blasta", sipht.generateLong("blasta"));
         input("xdformat", sipht.generateLong("xdformat"));
         input("time", sipht.generateLong("time"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("Blast_candidate") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("Blast_candidate") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -477,7 +475,7 @@ class BlastQRNA extends AppJob {
         output(SIPHT.CODE + "_QRNAblast.txt.E0.01.D1.q.gff", sipht.generateLong("CODE_QRNAblast.txt.E0.01.D1.q.gff"));
         output(SIPHT.CODE + "_QRNAblast.txt.E0.01.D1.q.rep", sipht.generateLong("CODE_QRNAblast.txt.E0.01.D1.q.rep"));
 
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("Blast_QRNA") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("Blast_QRNA") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -495,7 +493,7 @@ class BlastSynteny extends AppJob {
         input("blasta", sipht.generateLong("blasta"));
         input("time", sipht.generateLong("time"));
 
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("Blast_synteny") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("Blast_synteny") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -517,7 +515,7 @@ class SRNAAnnotate extends AppJob {
         output("QRNA_out", sipht.generateLong("QRNA_out"));
         output("srna_annotate.err", sipht.generateLong("srna_annotate.err"));
         output("srna_annotate.out", sipht.generateLong("srna_annotate.out"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("SRNA_annotate") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("SRNA_annotate") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
@@ -533,20 +531,10 @@ class BlastParalogues extends AppJob {
         input("xdformat", sipht.generateLong("xdformat"));
         input("blasta", sipht.generateLong("blasta"));
         input("time", sipht.generateLong("time"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("Blast_paralogues") * sipht.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.4f", sipht.generateDouble("Blast_paralogues") * sipht.getRuntimeFactor()));
     }
 
     public void addChild(AppJob child) {
         addLink(child, SIPHT.CODE + "_paralogues.txt", ((SIPHT) getApp()).generateLong("CODE_paralogues.txt"));
     }
 }
-
-class LastTransfer extends AppJob {
-
-    public LastTransfer(SIPHT sipht, String name, String version, String jobID) {
-        super(sipht, SIPHT.NAMESPACE, name, version, jobID);
-        output(SIPHT.CODE + "_sRNA.out_annotated", sipht.generateLong("CODE_sRNA.out_annotated"));
-        addAnnotation("runtime", String.format("%.2f", sipht.generateDouble("LastTransfer")));
-    }
-}
-
