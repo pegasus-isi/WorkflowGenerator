@@ -29,11 +29,10 @@ public abstract class AbstractApplication implements Application {
 
     protected double generateDouble(String key) {
         Distribution dist = this.distributions.get(key);
-        if (dist != null) {
-            return dist.getDouble();
+        if (dist == null) {
+            throw new RuntimeException("No such distribution: "+key);
         }
-
-        return 0.0;
+        return dist.getDouble();
     }
 
     protected long generateLong(String key) {
