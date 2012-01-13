@@ -270,7 +270,7 @@ class SeismogramSynthesis extends AppJob {
         this.jobID = jobID;
 
         int slip = cybershake.generateInt("SLIP");
-        int hipo = cybershake.generateInt("");
+        int hipo = cybershake.generateInt("HIPO");
         String inputVariation = prefix + "_txt.variation-s" +
                 String.format("%05d", slip) + "-h" + String.format("%05d", hipo);
 
