@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def scoop(N=5):
     w = Workflow(name="scoop", description="""Southeastern Coastal Ocean Observing and Prediction Program (SCOOP) workflow (Figure 4 in Ramakrishnan and Gannon)""")

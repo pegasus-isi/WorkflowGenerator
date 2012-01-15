@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def gene2life():
     w = Workflow(name="gene2life", description="""Gene2Life bioinformatics workflow (Figure 7 in Ramakrishnan and Gannon)""")

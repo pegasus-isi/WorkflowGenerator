@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def floodplain():
     w = Workflow(name="floodplain", description="""Floodplain Mapping workflow (Figure 5 in Ramakrishnan and Gannon)""")

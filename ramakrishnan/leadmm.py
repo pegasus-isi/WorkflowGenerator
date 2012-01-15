@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def leadmm():
     w = Workflow(name="leadmm", description="""LEAD Mesoscale Meterology workflow (Figure 1 in Ramakrishnan and Gannon)""")

@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def glimmer():
     w = Workflow(name="glimmer", description="""Glimmer bioinformatics workflow (Figure 6 in Ramakrishnan and Gannon)""")

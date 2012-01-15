@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def mememast():
     w = Workflow(name="mememast", description="""MEME-MAST bioinformatics workflow (Figure 9 in Ramakrishnan and Gannon)""")

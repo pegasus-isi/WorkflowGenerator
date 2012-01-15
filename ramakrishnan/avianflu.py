@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def avianflu(N=1000):
     w = Workflow(name="avianflu", description="""Avian Flu drug design workflow (Figure 11 in Ramakrishnan and Gannon)""")

@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def leadadas():
     w = Workflow(name="leadadas", description="""LEAD ARPS Data Analysis System (ADAS) workflow (Figure 2 in Ramakrishnan and Gannon)""")

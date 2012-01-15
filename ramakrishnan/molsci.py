@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def molsci():
     w = Workflow(name="molsci", description="""Molecular Sciences workflow (Figure 10 in Ramakrishnan and Gannon)""")

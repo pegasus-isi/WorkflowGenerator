@@ -1,6 +1,7 @@
+import os
 import sys
-from main import Main
-from workflow import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import *
 
 def motif(N=135):
     w = Workflow(name="motif", description="""MotifNetwork bioinformatics workflow (Figure 8 in Ramakrishnan and Gannon)""")
