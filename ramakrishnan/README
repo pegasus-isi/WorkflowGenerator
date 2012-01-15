@@ -53,6 +53,3 @@ jobs.
 The 'all.py' script generates the DAX files that are posted on the web page, 
 along with some DOT scripts that were used to generate the figures on the
 web page.
-
-The 'workflow.py' script is the base script for generating and writing
-workflows. 'main.py' has code for parsing common command-line arguments.
