@@ -6,6 +6,8 @@ The subdirectories are:
     ramakrishnan    Synthetic DAX generators for workflows from [1]
     yu              Synthetic DAX generators for workflows from [2]
     rahman          Synthetic DAX generators for workflows from [3]
+    nadeem          Synthetic DAX generators for workflows from [5]
+    synthetic       Random synthetic workflows
 
 Sample workflows generated using this code can be found at:
 
@@ -30,3 +32,8 @@ That page also contains a few synthetic Pegasus workflows from [4].
 [4] S. Bharathi, A. Chervenak, E. Deelman, G. Mehta, M.-H. Su, and 
     K. Vahi, “Characterization of Scientific Workflows”, 3rd Workshop 
     on Workflows in Support of Large Scale Science (WORKS 08), 2008.
+
+[5] Farrukh Nadeem, Thomas Fahringer, "Using Templates to Predict 
+    Execution Time of Scientific Workflow Applications in the Grid", 
+    9th IEEE/ACM International Symposium on Cluster Computing and 
+    the Grid, 2009.
