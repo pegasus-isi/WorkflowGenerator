@@ -113,7 +113,7 @@ class Workflow:
             if len(j.parents) > 0:
                 f.write('\t<child ref="%s">\n' % (j.id))
                 for p in j.parents:
-                    f.write('\t\t<parent ref="%s">\n' % (p.id))
+                    f.write('\t\t<parent ref="%s"/>\n' % (p.id))
                 f.write('\t</child>\n')
         
         f.write('</adag>\n')
