@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DIR=$(cd $(dirname $0) && pwd)
+
+source $DIR/common.sh
+
+java -cp $CLASSPATH simulation.generator.ShapeGenerator
+
