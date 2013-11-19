@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<project name="pegasus" default="compile">
+  <path id="build.classpath">
+    <fileset dir="lib" includes="*.jar"/>
+  </path>
+
+  <target name="setup">
+    <mkdir dir="classes"/>
+  </target>
+
+  <target name="compile" depends="setup">
+    <javac destdir="classes" srcdir="src" encoding="UTF-8" deprecation="true" debug="true"
+           classpathref="build.classpath" includeantruntime="false"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="classes"/>
+  </target>
+
+</project>
+
