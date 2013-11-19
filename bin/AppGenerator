@@ -4,5 +4,5 @@ DIR=$(cd $(dirname $0) && pwd)
 
 source $DIR/common.sh
 
-java -cp $CLASSPATH simulation.generator.AppGenerator
+exec java -cp $CLASSPATH simulation.generator.AppGenerator "$@"
 
