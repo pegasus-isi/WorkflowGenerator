@@ -22,12 +22,22 @@ The workflows generated for these applications use statistical distributions of
 file size, workflow structure, and runtime that were derived from real workflows
 used by the application.
 
+The code can be compiled using:
+
+$ ant compile
+
+There are wrapper scripts in the bin/ directory for each of the main classes.
+For example, to run the AppGenerator, use:
+
+$ ./bin/AppGenerator -h
+
 For more information contact the Pegasus users mailing list:
-    
+
     http://mailman.isi.edu/mailman/listinfo/pegasus-users
-    
+
 Alternatively, you can email the Pegasus team directly at:
-    
+
     pegasus-support@isi.edu
 
 This code was written by Shishir Bharathi and updated by Gideon Juve.
+
