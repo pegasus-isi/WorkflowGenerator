@@ -325,7 +325,6 @@ class ZipSeis extends AppJob {
         Set<AppFilename> inputs = getInputs();
         long zipSize = Misc.randomLong((long) (inputs.size() * ((CyberShake) getApp()).generateLong("GRM") / ((CyberShake) getApp()).generateDouble("ZipSeis_factor")), 0.25);
 
-        removeAllUses();
         output("Cybershake_Seismograms.zip", zipSize);
         double runtime = zipSize * ((CyberShake) getApp()).getRuntimeFactor() / ((CyberShake) getApp()).generateDouble("ZipSeis_rate");
         addAnnotation("runtime", String.format("%.2f", runtime));
@@ -345,7 +344,6 @@ class ZipPSA extends AppJob {
         Set<AppFilename> inputs = getInputs();
         long zipSize = Misc.randomLong((long) (inputs.size() * ((CyberShake) getApp()).generateLong("BSA") / ((CyberShake) getApp()).generateDouble("ZipSeis_factor")), 0.25);
 
-        removeAllUses();
         output("Cybershake_PSA.zip", zipSize);
 
         double runtime = zipSize * ((CyberShake) getApp()).getRuntimeFactor() / ((CyberShake) getApp()).generateDouble("ZipPSA_rate");
