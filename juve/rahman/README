@@ -1,0 +1,13 @@
+These workflows come from:
+    
+    M. Rahman, S. Venugopal, and R. Buyya, "A Dynamic Critical Path 
+    Algorithm for Scheduling Scientific Workflow Applications on Global 
+    Grids,” 3rd IEEE International Conference on e-Science and Grid 
+    Computing, 2007.
+
+The workflows are:
+    
+    parallel.py     Figure 2a
+    forkjoin.py     Figure 2b
+    rand.py         Figure 2c
+

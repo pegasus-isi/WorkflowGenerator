@@ -1,0 +1,10 @@
+These synthetic workflows come from:
+
+    Farrukh Nadeem, Thomas Fahringer, "Using Templates to Predict 
+    Execution Time of Scientific Workflow Applications in the Grid", 
+    9th IEEE/ACM International Symposium on Cluster Computing and 
+    the Grid, 2009.
+
+None of the workflows have data specified, and the runtime distributions
+for the tasks are not known. A simple uniform distribution between 1 and 100
+seconds and a scaling parameter are used for the time being.
