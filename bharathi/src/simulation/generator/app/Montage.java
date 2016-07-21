@@ -80,7 +80,7 @@ public class Montage extends AbstractApplication {
         longopts[4] = new LongOpt("inputs", LongOpt.REQUIRED_ARGUMENT, null, 'i');
         longopts[5] = new LongOpt("overlap-probability", LongOpt.REQUIRED_ARGUMENT, null, 'p');
         longopts[6] = new LongOpt("square", LongOpt.REQUIRED_ARGUMENT, null, 's');
-        Getopt g = new Getopt("AppGenerator", args, "d:f:hi:n:p:", longopts);
+        Getopt g = new Getopt("AppGenerator", args, "d:f:hi:n:p:s:", longopts);
         g.setOpterr(false);
         
         int numJobs = 0;
@@ -144,7 +144,6 @@ public class Montage extends AbstractApplication {
             this.numDiff = (int) Math.round(MathUtils.binomialCoefficient(numProj, 2) * DEFAULT_PROBABILITY);
             this.degree = Math.sqrt((double) this.numProj / INPUTS_1_DEGREE);
         } else {
-
             if (this.degree > 0 && prob >= 0) {
                 if (inputs > 0) {
                     this.numProj = inputs;
