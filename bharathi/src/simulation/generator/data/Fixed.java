@@ -4,7 +4,7 @@ package simulation.generator.data;
  * @author Shishir Bharathi
  */
 public class Fixed implements DataFactor {
-    private int factor;
+    private final int factor;
 
     public Fixed(int factor) {
         this.factor = factor;

@@ -16,7 +16,7 @@ public class SIPHT extends AbstractApplication {
     public static final String NAMESPACE = "SIPHT";
     public static final String CODE = "NC_0025AG05";
     private static final int MEAN_PATSERS = 18;
-    private int PARTNER_FACTOR = 936;
+    private final int PARTNER_FACTOR = 936;
     private double runtimeFactor = 1.0;
     private int numJobs;
 
@@ -200,12 +200,12 @@ public class SIPHT extends AbstractApplication {
         
         int remaining = numJobs - count * 13;
         int[] countJobs = Misc.closeNonZeroRandoms(count, remaining, 0.2);
-        for (int i = 0; i < countJobs.length; i++) {
-            constructSubWorkflow(countJobs[i]);
+        for (int countJob : countJobs) {
+            constructSubWorkflow(countJob);
         }
     }
 
-    protected void constructSubWorkflow(int remaining) {
+    private void constructSubWorkflow(int remaining) {
         if (remaining <= 0) {
             throw new RuntimeException("Cannot construct workflow with numJobs=" + (remaining + 13));
         }
@@ -341,7 +341,7 @@ class Blast extends AppJob {
 
 class Patser extends AppJob {
 
-    private String jobID;
+    private final String jobID;
 
     public Patser(SIPHT sipht, String name, String version, String jobID) {
         super(sipht, SIPHT.NAMESPACE, name, version, jobID);

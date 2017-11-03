@@ -9,7 +9,7 @@ import org.griphyn.vdl.dax.ADAG;
  * @author Gideon Juve <juve@usc.edu>
  */
 public interface Application {
-    public ADAG getDAX();
-    public void generateWorkflow(String... args) throws Exception;
-    public void printWorkflow(OutputStream os) throws Exception;
+    ADAG getDAX();
+    void generateWorkflow(String... args);
+    void printWorkflow(OutputStream os) throws Exception;
 }

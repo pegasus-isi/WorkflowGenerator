@@ -11,17 +11,17 @@ import java.util.HashMap;
 /**
  * @author Shishir Bharathi
  */
-public class ConfigParser {
-    private Map<String, Distribution> vars;
+class ConfigParser {
+    private final Map<String, Distribution> vars;
 
-    public ConfigParser() {
+    private ConfigParser() {
         this.vars = new HashMap<String, Distribution>();
     }
     
     /*
      * Create <Variable type, Distribution> for all entries in the config file.
      */
-    public Map<String, Distribution> populate(String filename) throws Exception {
+    private Map<String, Distribution> populate(String filename) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(filename);

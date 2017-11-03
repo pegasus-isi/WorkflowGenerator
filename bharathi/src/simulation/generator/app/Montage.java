@@ -19,15 +19,15 @@ import simulation.generator.util.Distribution;
 public class Montage extends AbstractApplication {
 
     public static final String namespace = "Montage";
-    public static final int INPUTS_1_DEGREE = 50;
+    private static final int INPUTS_1_DEGREE = 50;
     public static Log logger = LogFactory.getLog(Montage.class);
-    private double factor = 4.0;
+    private final double factor = 4.0;
     private double degree;
     private double runtimeFactor = 1;
     private int numProj;
     private int numDiff;
-    private static double DEFAULT_PROBABILITY = 0.05;
-    private static int MIN_INPUTS = 5;
+    private static final double DEFAULT_PROBABILITY = 0.05;
+    private static final int MIN_INPUTS = 5;
 
     public String getNamespace() {
         return namespace;
@@ -249,8 +249,8 @@ public class Montage extends AbstractApplication {
 
 
         MImgTbl mImgTbl = new MImgTbl(this, "mImgTbl", "1.0", getNewJobID());
-        for (int i = 0; i < mBackground.size(); i++) {
-            mBackground.get(i).addChild(mImgTbl);
+        for (MBackground aMBackground : mBackground) {
+            aMBackground.addChild(mImgTbl);
         }
 
         MAdd mAdd = new MAdd(this, "mAdd", "1.0", getNewJobID());
@@ -304,7 +304,7 @@ public class Montage extends AbstractApplication {
 }
 
 class MProjectPP extends AppJob {
-    private String filename;
+    private final String filename;
     
     public MProjectPP(Montage montage, String name, String version, String jobID) {
         super(montage, Montage.namespace, name, version, jobID);
@@ -431,13 +431,14 @@ class MImgTbl extends AppJob {
 
 class MAdd extends AppJob {
 
-    private String jobID;
+    private final String jobID;
 
     public MAdd(Montage montage, String name, String version, String jobID) {
         super(montage, Montage.namespace, name, version, jobID);
 
         double runtime = montage.generateDouble("mAdd") * montage.getDegree() * montage.getDegree();
         addAnnotation("runtime", String.format("%.2f", runtime * montage.getRuntimeFactor()));
+        addAnnotation("peak_mem_bytes", "123456");
         input("region.hdr", montage.generateLong("region.hdr"));
         this.jobID = jobID;
 
@@ -455,7 +456,7 @@ class MAdd extends AppJob {
 
 class MShrink extends AppJob {
 
-    private String jobID;
+    private final String jobID;
 
     public MShrink(Montage montage, String name, String version, String jobID) {
         super(montage, Montage.namespace, name, version, jobID);

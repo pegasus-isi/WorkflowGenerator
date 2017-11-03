@@ -10,11 +10,10 @@ public class Sparse implements Connection {
     /*
      * Create fewer connections between parent level and child level.
      */
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public int getNumConnections(double numChildren, double numParents) {
         double min = numChildren / numParents;
-        double max = numChildren;
 
         double r = Math.abs(random.nextGaussian());
         /*
@@ -25,6 +24,6 @@ public class Sparse implements Connection {
         /*
          * Prefer values closer to min
          */
-        return (int) Math.ceil(min + (r * (max - min)));
+        return (int) Math.ceil(min + (r * (numChildren - min)));
     }
 }

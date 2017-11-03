@@ -9,8 +9,8 @@ import java.util.Random;
  */
 public class Misc {
 
-    private static Random random;
-    public static final int MAX_TRIES = 100;
+    private static final Random random;
+    private static final int MAX_TRIES = 100;
     
     static {
         random = new Random();
@@ -46,7 +46,7 @@ public class Misc {
     /**
      * randomDivisible: return a "random" number divisible by given input.
      */
-    public static int randomDivisible(int max, int divisor) {
+    private static int randomDivisible(int max, int divisor) {
         /*
          * Can generate a random number until one divisible is found.
          * May take too many attempts = max/divisor, in expectation.
@@ -150,7 +150,7 @@ public class Misc {
             inner: for (int j = 0; j < n; j++) {
                 if (temp[j] == 0) {
                     found = false;
-                    break inner;
+                    break;
                 }
             }
             
@@ -174,7 +174,7 @@ public class Misc {
             inner: for (int j = 0; j < n; j++) {
                 if (temp[j] == 0 || temp[j] > max) {
                     found = false;
-                    break inner;
+                    break;
                 }
             }
             
@@ -334,7 +334,7 @@ public class Misc {
      * Generated a random variable from a truncated normal distribution.
      * Tolerance is defined in terms of mean.
      */
-    public static double truncatedNormal(double mean, double variance, double tolerance) {
+    private static double truncatedNormal(double mean, double variance, double tolerance) {
         if (variance < 0) {
             throw new IllegalArgumentException("Variance cannot be less than 0: " + variance);
         }
@@ -376,7 +376,7 @@ public class Misc {
     /**
      * Generate a uniform random integer in the specified interval (start, end].
      */
-    public static long randomLong(long start, long end) {
+    private static long randomLong(long start, long end) {
         if (start == end) {
             return start;
         } else {
@@ -390,11 +390,7 @@ public class Misc {
     }
     
     public static boolean randomToss(double bias) {
-        if (random.nextDouble() <= bias) {
-            return true;
-        } else {
-            return false;
-        }
+        return random.nextDouble() <= bias;
     }
     
     public static double randomDouble(double min, double max) {
@@ -423,8 +419,8 @@ public class Misc {
     }
 
     public static void print(int[] array) {
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i] + " ");
+        for (int anArray : array) {
+            System.out.print(anArray + " ");
         }
 
         System.out.println();
@@ -466,7 +462,7 @@ public class Misc {
         System.out.println("= " + gensum);
     }
 
-    public static void testCloseNonZeroRandoms(int n, int sum, double tolerance) {
+    private static void testCloseNonZeroRandoms(int n, int sum, double tolerance) {
         int[] test = closeNonZeroRandoms(n, sum, tolerance);
         int gensum = 0;
 

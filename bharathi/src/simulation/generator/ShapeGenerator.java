@@ -25,14 +25,14 @@ import simulation.generator.util.Misc;
  *
  * @author Shishir Bharathi
  */
-public class ShapeGenerator {
-    private List<List<Job>> levels;
-    private ADAG dax;
-    private Shape shape;
-    private Connection connection;
-    private DataFactor dataFactor;
+class ShapeGenerator {
+    private final List<List<Job>> levels;
+    private final ADAG dax;
+    private final Shape shape;
+    private final Connection connection;
+    private final DataFactor dataFactor;
 
-    public ShapeGenerator(Shape shape, Connection connection, DataFactor dataFactor) {
+    private ShapeGenerator(Shape shape, Connection connection, DataFactor dataFactor) {
         this.shape = shape;
         this.connection = connection;
         this.dataFactor = dataFactor;
@@ -146,7 +146,7 @@ public class ShapeGenerator {
             /*
              * Mirror above relationship.
              */
-            child = (Job) children.get(children.size() - 1 - i);
+            child = children.get(children.size() - 1 - i);
 
             for (int j = 0; j < connections; j++) {
                 Job parent = parents.get(parents.size() - 1 - start - j);
@@ -169,13 +169,13 @@ public class ShapeGenerator {
                  * We have at least 2 connections as per the adjustment at
                  * the top.
                  */
-                Job parent = (Job) parents.get(parents.size() / 2);
+                Job parent = parents.get(parents.size() / 2);
                 connect(parent, child, data);
                 parent = parents.get((parents.size() / 2) - 1);
                 connect(parent, child, data);
                 connections -= 2;
             } else {
-                Job parent = (Job) parents.get(parents.size() / 2);
+                Job parent = parents.get(parents.size() / 2);
                 connect(parent, child, data);
                 if (connections % 2 != 0) {
                     connections--;
@@ -195,8 +195,8 @@ public class ShapeGenerator {
 
     private void setupDependencies() {
         for (int i = 0; i < (this.levels.size() - 1); i++) {
-            List<Job> currentLevel = (List<Job>) this.levels.get(i);
-            List<Job> nextLevel = (List<Job>) this.levels.get(i + 1);
+            List<Job> currentLevel = this.levels.get(i);
+            List<Job> nextLevel = this.levels.get(i + 1);
 
             connectLevels(currentLevel, nextLevel, false);
         }
@@ -211,7 +211,7 @@ public class ShapeGenerator {
 
         for (int i = 0; i < widths.length; i++) {
             if (inFiles[i] > 0) {
-                List<Job> level = (List<Job>) this.levels.get(i);
+                List<Job> level = this.levels.get(i);
                 List<Job> dataIn = new LinkedList<Job>();
 
                 for (int j = 0; j < inFiles[i]; j++) {
@@ -237,11 +237,11 @@ public class ShapeGenerator {
 
         for (int i = 0; i < widths.length; i++) {
             if (outFiles[i] > 0) {
-                List<Job> level = (List<Job>) levels.get(i);
+                List<Job> level = levels.get(i);
                 int outPerJob = outFiles[i] / level.size();
 
-                for (int j = 0; j < level.size(); j++) {
-                    Job job = (Job) level.get(j);
+                for (Job aLevel : level) {
+                    Job job = (Job) aLevel;
 
                     for (int k = 0; k < outPerJob; k++) {
                         job.addUses(new Filename("Out" +
@@ -257,7 +257,7 @@ public class ShapeGenerator {
                  */
                 for (int j = 0; j < remaining; j++) {
                     int index = ((level.size() - remaining) / 2) + j;
-                    Job job = (Job) level.get(index);
+                    Job job = level.get(index);
                     job.addUses(new Filename("Out" +
                             String.format("%05d", outCount), LFN.OUTPUT));
                     outCount++;
@@ -266,16 +266,16 @@ public class ShapeGenerator {
         }
     }
 
-    public void generateWorkflow(int numJobs, int numFiles, int depth)
+    private void generateWorkflow(int numJobs, int numFiles, int depth)
         throws Exception {
         int[] widths = this.shape.setupWidths(numJobs, depth);
 
-        for (int i = 0; i < widths.length; i++) {
-            if (widths[i] <= 0) {
+        for (int width1 : widths) {
+            if (width1 <= 0) {
                 String msg = "Error setting levels: ";
 
-                for (int j = 0; j < widths.length; j++) {
-                    msg += (" " + widths[j]);
+                for (int width : widths) {
+                    msg += (" " + width);
                 }
 
                 throw new Exception(msg);
@@ -288,7 +288,7 @@ public class ShapeGenerator {
         this.dax.toXML(new OutputStreamWriter(System.out), "", null);
     }
 
-    public static void usage() {
+    private static void usage() {
         String msg = "ShapeGenerator -s <shape> -c <connection> -f <data factor> -j <num jobs> -d <depth> [-h]" +
             "\n--shape | -s Shape for the workflow to be generated" +
             "\n--connection | -c Specifies how jobs in the workflow should be connected" +

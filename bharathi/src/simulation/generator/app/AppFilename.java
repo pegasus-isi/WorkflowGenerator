@@ -10,9 +10,9 @@ import java.util.Map;
 /**
  * @author Shishir Bharathi
  */
-public class AppFilename extends Filename {
+class AppFilename extends Filename {
 
-    private Map<String, String> annotations;
+    private final Map<String, String> annotations;
 
     public AppFilename(String filename, int type, long size) {
         this(filename, type, size, LFN.XFER_MANDATORY, true);
@@ -32,7 +32,7 @@ public class AppFilename extends Filename {
 
     private String annotatedXML(String temp) {
         int idx = temp.indexOf("/>");
-        StringBuffer result = new StringBuffer(temp.length() + 32);
+        StringBuilder result = new StringBuilder(temp.length() + 32);
         result.append(temp.substring(0, idx));
         for (Map.Entry<String, String> entry : this.annotations.entrySet()) {
             result.append(" " + entry.getKey() + "=\"" + entry.getValue() + "\"");

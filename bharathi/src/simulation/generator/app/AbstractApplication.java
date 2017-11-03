@@ -13,11 +13,11 @@ import simulation.generator.util.Distribution;
  */
 public abstract class AbstractApplication implements Application {
     
-    protected ADAG dax;
-    protected int id;
-    protected Map<String, Distribution> distributions;
+    private final ADAG dax;
+    private int id;
+    final Map<String, Distribution> distributions;
     
-    protected AbstractApplication() {
+    AbstractApplication() {
         this.dax = new ADAG();
         this.id = 0;
         this.distributions = new HashMap<String, Distribution>();
@@ -27,7 +27,7 @@ public abstract class AbstractApplication implements Application {
         return this.distributions;
     }
 
-    protected double generateDouble(String key) {
+    double generateDouble(String key) {
         Distribution dist = this.distributions.get(key);
         if (dist == null) {
             throw new RuntimeException("No such distribution: "+key);
@@ -35,17 +35,17 @@ public abstract class AbstractApplication implements Application {
         return dist.getDouble();
     }
 
-    protected long generateLong(String key) {
+    long generateLong(String key) {
         return (long) generateDouble(key);
     }
 
-    protected int generateInt(String key) {
+    int generateInt(String key) {
         return (int) generateDouble(key);
     }
 
     protected abstract void populateDistributions();
     
-    protected String getNewJobID() {
+    String getNewJobID() {
         return String.format("ID%05d", this.id++);
     }
     
@@ -58,7 +58,7 @@ public abstract class AbstractApplication implements Application {
         return this.dax;
     }
     
-    public void generateWorkflow(String... args) throws Exception {
+    public void generateWorkflow(String... args) {
         populateDistributions();
         processArgs(args);
         constructWorkflow();

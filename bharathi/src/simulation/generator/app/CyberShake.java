@@ -15,9 +15,9 @@ import simulation.generator.util.Distribution;
  */
 public class CyberShake extends AbstractApplication {
 
-    public static final int MAX_RUPTURES = 30;
-    public static final int MAX_VARIATIONS = 30;
-    public static final double BIAS = 1.0 / 20;
+    private static final int MAX_RUPTURES = 30;
+    private static final int MAX_VARIATIONS = 30;
+    private static final double BIAS = 1.0 / 20;
     private static final int MIN_INPUTS = 1;
     private static final double EXTRACT_SGT_FACTOR = 0.0081;
 //    public static final double DEFAULT_FACTOR = SeismogramSynthesis.MEAN_RUNTIME;
@@ -126,7 +126,7 @@ public class CyberShake extends AbstractApplication {
                         "\nMinimum required: " + singleInputSize * MIN_INPUTS);
             }
             numExtractSGT = (int) Math.ceil(data / this.distributions.get("SGT_MEAN").getLong());
-            numJobs = numExtractSGT + Misc.randomInt((int) (numExtractSGT * 5), 0.25) + 2;
+            numJobs = numExtractSGT + Misc.randomInt(numExtractSGT * 5, 0.25) + 2;
             numSeismogramSynthesis = (numJobs - 2 - numExtractSGT) / 2;
             counts = Misc.closeNonZeroRandoms(numExtractSGT, numSeismogramSynthesis, 0.25);
             Arrays.sort(counts);
@@ -225,7 +225,7 @@ public class CyberShake extends AbstractApplication {
 
 class ExtractSGT extends AppJob {
 
-    private String prefix;
+    private final String prefix;
     private SeismogramSynthesis lastChild;
 
     public ExtractSGT(CyberShake cybershake, String name, String version, String jobID, String prefix) {
@@ -261,8 +261,8 @@ class ExtractSGT extends AppJob {
 
 class SeismogramSynthesis extends AppJob {
 
-    private String prefix;
-    private String jobID;
+    private final String prefix;
+    private final String jobID;
 
     public SeismogramSynthesis(CyberShake cybershake, String name, String version, String jobID, String prefix) {
         super(cybershake, CyberShake.NAMESPACE, name, version, jobID);

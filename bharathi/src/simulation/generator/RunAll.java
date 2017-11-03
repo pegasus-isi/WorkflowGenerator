@@ -15,8 +15,8 @@ import simulation.generator.app.SIPHT;
  * 
  * @author Gideon Juve <juve@usc.edu>
  */
-public class RunAll {
-    public static void run(Application app, File outfile, String... args) throws Exception {
+class RunAll {
+    private static void run(Application app, File outfile, String... args) throws Exception {
         app.generateWorkflow(args);
         app.printWorkflow(new FileOutputStream(outfile));
     }

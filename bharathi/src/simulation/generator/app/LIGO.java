@@ -236,8 +236,8 @@ public class LIGO extends AbstractApplication {
             throw new RuntimeException("Count: " + totalEdges);
         } else {
             int sum = 0;
-            for (int i = 0; i < bnSet.length; i++) {
-                sum += bnSet[i];
+            for (int aBnSet : bnSet) {
+                sum += aBnSet;
             }
             
             if (sum != totalEdges) {
@@ -343,7 +343,7 @@ class TmpltBank extends AppJob {
     
     public static final int KEY1 = Misc.randomInt(800000000, 0.1);
     public static final int KEY2;
-    public static final int KEY3;
+    private static final int KEY3;
     
     static {
         int key;
@@ -397,8 +397,7 @@ class Inspiral extends AppJob {
         input(String.format("HL-INJECTIONS_100-%d-%d.xml", INJECTION_KEY1, INJECTION_KEY2),
                 ligo.generateInt("INJECTION.xml"));
         double runtime = ligo.generateDouble("Inspiral") * ligo.getRuntimeFactor();
-        addAnnotation("runtime",
-                String.format("%.2f", runtime));
+        addAnnotation("runtime", String.format("%.2f", runtime));
     }
 
     public void addInputs(Set<AppFilename> inputs) {
