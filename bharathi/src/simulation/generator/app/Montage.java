@@ -438,14 +438,19 @@ class MAdd extends AppJob {
     public MAdd(Montage montage, String name, String version, String jobID) {
         super(montage, Montage.namespace, name, version, jobID);
 
+        // runtime
         double runtime = montage.generateDouble("mAdd") * montage.getDegree() * montage.getDegree();
         addAnnotation("runtime", String.format("%.2f", runtime * montage.getRuntimeFactor()));
+
+        // input files
         long filesize = montage.generateLong("region.hdr");
-        
-        String filesizeString = ""+filesize;
-        addArgument(new PseudoText(filesizeString));
-        addAnnotation("peak_mem_bytes", filesizeString);
         input("region.hdr", filesize);
+
+        // memory
+        String filesizeString = ""+filesize;
+        addAnnotation("peak_mem_bytes", filesizeString);
+        addArgument(new PseudoText(filesizeString));
+
         this.jobID = jobID;
 
     }
