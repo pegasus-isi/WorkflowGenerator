@@ -3,6 +3,8 @@ package simulation.generator.app;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 
+import org.griphyn.vdl.dax.Leaf;
+import org.griphyn.vdl.dax.PseudoText;
 import simulation.generator.util.Misc;
 
 import java.util.List;
@@ -438,8 +440,12 @@ class MAdd extends AppJob {
 
         double runtime = montage.generateDouble("mAdd") * montage.getDegree() * montage.getDegree();
         addAnnotation("runtime", String.format("%.2f", runtime * montage.getRuntimeFactor()));
-        addAnnotation("peak_mem_bytes", "123456");
-        input("region.hdr", montage.generateLong("region.hdr"));
+        long filesize = montage.generateLong("region.hdr");
+        
+        String filesizeString = ""+filesize;
+        addArgument(new PseudoText(filesizeString));
+        addAnnotation("peak_mem_bytes", filesizeString);
+        input("region.hdr", filesize);
         this.jobID = jobID;
 
     }
