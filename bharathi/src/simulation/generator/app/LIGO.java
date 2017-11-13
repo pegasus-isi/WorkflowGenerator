@@ -315,11 +315,11 @@ public class LIGO extends AbstractApplication {
     @Override
     protected void populateDistributions() {
         /*
-         * File size stuff.
+         * File size distributions.
          */
         this.distributions.put("GWF", Distribution.getTruncatedNormalDistribution(15595958.08, 334629862.67));
         this.distributions.put("GWF_MEAN", Distribution.getConstantDistribution(15595958.08));
-        this.distributions.put("TMPLTBANK.xml", Distribution.getTruncatedNormalDistribution(986917.26, 359037821.49));
+        this.distributions.put("TMPLTBANK.xml", Distribution.getTruncatedNormalDistribution(986917.26, 18948.*18948.));
         this.distributions.put("FAC_DARM", Distribution.getConstantDistribution(8415922));
         this.distributions.put("REF_DARM", Distribution.getConstantDistribution(902334));
 
@@ -329,13 +329,15 @@ public class LIGO extends AbstractApplication {
         this.distributions.put("TRIGBANK.xml", Distribution.getTruncatedNormalDistribution(12779.67, 137597136.79));
 
         /*
-         * Runtime stuff.
+         * Runtime distributions.
          */
         this.distributions.put("TmpltBank", Distribution.getTruncatedNormalDistribution(18.14, 0.18));
         this.distributions.put("TmltBank_mean", Distribution.getConstantDistribution(18.14));
-        this.distributions.put("Inspiral", Distribution.getTruncatedNormalDistribution(460.21, 297397.45));
+        this.distributions.put("Inspiral", Distribution.getTruncatedNormalDistribution(460.21, 545*545));
         this.distributions.put("Thinca", Distribution.getTruncatedNormalDistribution(5.37, 0.06));
         this.distributions.put("TrigBank", Distribution.getTruncatedNormalDistribution(5.11, 0.1));
+
+
     }
 }
 

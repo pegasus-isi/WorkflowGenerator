@@ -3,6 +3,7 @@ package simulation.generator.app;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 
+import simulation.generator.util.MemoryModel;
 import simulation.generator.util.Misc;
 
 import java.util.Arrays;
@@ -201,25 +202,47 @@ public class CyberShake extends AbstractApplication {
         /*
          * File size distributions.
          */
-        this.distributions.put("SGT", Distribution.getTruncatedNormalDistribution(19958666972.0, 93654683371233792.0));
-        this.distributions.put("SGT_MEAN", Distribution.getConstantDistribution(19958666972.0));
-        this.distributions.put("SUB_SGT", Distribution.getTruncatedNormalDistribution(231720131.58, 27081652820787388.00));
-        this.distributions.put("SLIP", Distribution.getUniformDistribution(0, 10000));
-        this.distributions.put("HIPO", Distribution.getUniformDistribution(0, 10000));
-        this.distributions.put("VARIATION", Distribution.getTruncatedNormalDistribution(3708598.53, 10160641539133.56));
-        this.distributions.put("GRM", Distribution.getConstantDistribution(24000));
-        this.distributions.put("BSA", Distribution.getConstantDistribution(216));
-        this.distributions.put("ZipSeis_factor", Distribution.getConstantDistribution(6));
-        this.distributions.put("ZipPSA_factor", Distribution.getConstantDistribution(6));
+        distributions.put("SGT", Distribution.getTruncatedNormalDistribution(19958666972.0, 93654683371233792.0));
+        distributions.put("SGT_MEAN", Distribution.getConstantDistribution(19958666972.0));
+        distributions.put("SUB_SGT", Distribution.getTruncatedNormalDistribution(231720131.58, 27081652820787388.00));
+        distributions.put("SLIP", Distribution.getUniformDistribution(0, 10000));
+        distributions.put("HIPO", Distribution.getUniformDistribution(0, 10000));
+        distributions.put("VARIATION", Distribution.getTruncatedNormalDistribution(3708598.53, 10160641539133.56));
+        distributions.put("GRM", Distribution.getConstantDistribution(24000));
+        distributions.put("BSA", Distribution.getConstantDistribution(216));
+        distributions.put("ZipSeis_factor", Distribution.getConstantDistribution(6));
+        distributions.put("ZipPSA_factor", Distribution.getConstantDistribution(6));
 
         /*
          * Runtime distributions.
          */
-        this.distributions.put("ExtractSGT", Distribution.getTruncatedNormalDistribution(137.45, 42681.27));
-        this.distributions.put("SeismogramSynthesis", Distribution.getTruncatedNormalDistribution(43.40, 984.36));
-        this.distributions.put("PeakValCalcOkaya", Distribution.getTruncatedNormalDistribution(1.09, 3.71));
-        this.distributions.put("ZipSeis_rate", Distribution.getConstantDistribution(228180.52));
-        this.distributions.put("ZipPSA_rate", Distribution.getConstantDistribution(2782.00));
+        distributions.put("ExtractSGT", Distribution.getTruncatedNormalDistribution(137.45, 206d*206));
+        distributions.put("SeismogramSynthesis", Distribution.getTruncatedNormalDistribution(43.40, 31d*31));
+        distributions.put("PeakValCalcOkaya", Distribution.getTruncatedNormalDistribution(1.09, 3.71));
+        distributions.put("ZipSeis_rate", Distribution.getConstantDistribution(228180d));
+        distributions.put("ZipPSA_rate", Distribution.getConstantDistribution(2782d));
+
+        /*
+         * Memory models.
+         */
+
+        memoryModels.put("ExtractSGT", MemoryModel.constant(20.64e6, 0.64e6));
+        // assume 90% of the variance in memory consumption is explained by input size
+        memoryModels.put("SeismogramSynthesis", new MemoryModel(1.49, 0., 483e6*0.1));
+        memoryModels.put("ZipSeis", MemoryModel.constant(6.25e6, 0.16));
+        memoryModels.put("PeakValCalcOkaya", MemoryModel.constant(3.11e6, 0.01));
+        memoryModels.put("ZipPSA_rate", MemoryModel.constant(6.16e6, 0.16));
+
+        /*
+         * Peak memory relative time distributions.
+         */
+        Distribution peakMemRelativeTime = Distribution.getUniformDistribution(0.4,0.6);
+        distributions.put("ExtractSGT_peak_mem_relative_time", peakMemRelativeTime);
+        distributions.put("SeismogramSynthesis_peak_mem_relative_time", peakMemRelativeTime);
+        distributions.put("PeakValCalcOkaya_peak_mem_relative_time", peakMemRelativeTime);
+        distributions.put("ZipSeis_peak_mem_relative_time", peakMemRelativeTime);
+        distributions.put("ZipPSA_peak_mem_relative_time", peakMemRelativeTime);
+
     }
 }
 

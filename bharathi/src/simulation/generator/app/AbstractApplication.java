@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.HashMap;
 import simulation.generator.util.Distribution;
+import simulation.generator.util.MemoryModel;
 
 /**
  * @author Shishir Bharathi
@@ -15,12 +16,12 @@ public abstract class AbstractApplication implements Application {
     
     private final ADAG dax;
     private int id;
-    final Map<String, Distribution> distributions;
-    
+    final Map<String, Distribution> distributions = new HashMap<>();
+    final Map<String, MemoryModel> memoryModels = new HashMap<>();
+
     AbstractApplication() {
         this.dax = new ADAG();
         this.id = 0;
-        this.distributions = new HashMap<String, Distribution>();
     }
     
     protected Map<String, Distribution> getDistributions() {
