@@ -13,7 +13,10 @@ import simulation.generator.util.MemoryModel;
  * @author Shishir Bharathi
  */
 public abstract class AbstractApplication implements Application {
-    
+
+    /** the width of the interval of a uniform distribution with a known standard deviation sd is sqrt(12)*sd. */
+    protected final double sqrt12 = Math.sqrt(12.);
+
     private final ADAG dax;
     private int id;
     final Map<String, Distribution> distributions = new HashMap<>();

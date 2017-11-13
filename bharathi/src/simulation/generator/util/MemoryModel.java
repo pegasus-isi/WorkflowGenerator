@@ -42,25 +42,44 @@ import java.util.Random;
  * we assume two files of same size (which should be very rare for non-identical files) cause equal memory consumption.
  * We start from a linear model on input size, but we still want some unexplained (deterministic) variation, for which
  * we use a pseudo random number generator that is seeded with the file size.
+ *
+ * peak mem = slope * input size + intercept + random value in range [-err, +err]
+ *
  */
 public class MemoryModel{
-    final double slope;
-    final double intercept;
-    final double err;
 
-    public MemoryModel(double slope, double intercept, double err) {
+    /** The slope of the linear function. */
+    final double slope;
+    /** The axis intercept of the linear function. */
+    final double intercept;
+    /** A bound on the deterministic random error that is applied to the model. */
+    final long err;
+
+    /**
+     * peak mem will be sampled from slope * input size + intercept + random value in range [-err, +err]
+     * @param slope The slope of the linear function.
+     * @param intercept The axis intercept of the linear function.
+     * @param err A bound on the deterministic random error that is applied to the model.
+     */
+    public MemoryModel(double slope, double intercept, long err) {
         this.slope = slope;
         this.intercept = intercept;
         this.err = err;
     }
-    public static MemoryModel constant(double value, double err){
+
+    public static MemoryModel constant(double value, long err){
         return new MemoryModel(0, value, err);
     }
 
+    /**
+     * A random value following a linear model with some deterministic error (returns always the same value for the same input size, but not perfectly linear.)
+     * @param inputFileSize The size of the input file, usually in bytes.
+     * @return a random value following the memory model.
+     */
     public long getPeakMemoryConsumption(long inputFileSize){
         Random errorGenerator = new Random(inputFileSize);
         int signum = errorGenerator.nextInt(3)-1;
-        return (long) (inputFileSize*slope + intercept + signum*errorGenerator.nextLong()%(long)err);
+        return Math.max(0, (long) (inputFileSize*slope + intercept + signum*errorGenerator.nextLong()%(err+1)));
     }
 
 

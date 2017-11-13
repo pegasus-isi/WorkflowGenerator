@@ -13,7 +13,7 @@ public class Misc {
     private static final int MAX_TRIES = 100;
     
     static {
-        random = new Random();
+        random = new Random(129039123023L);
     }
 
     /**

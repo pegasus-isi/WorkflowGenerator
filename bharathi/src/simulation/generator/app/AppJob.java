@@ -28,9 +28,9 @@ abstract class AppJob extends Job {
         super(namespace, name, version, jobID);
         this.app = app;
         this.app.getDAX().addJob(this);
-        this.inputs = new HashSet<AppFilename>();
-        this.outputs = new HashSet<AppFilename>();
-        this.annotations = new HashMap<String, String>();
+        this.inputs = new HashSet<>();
+        this.outputs = new HashSet<>();
+        this.annotations = new HashMap<>();
     }
 
     void addAnnotation(String key, String value) {
