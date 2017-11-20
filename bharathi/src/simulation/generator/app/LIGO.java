@@ -343,7 +343,8 @@ public class LIGO extends AbstractApplication {
          * Memory models.
          */
         memoryModels.put("TmpltBank", MemoryModel.constant(404.54e6, (long) (sqrt12*0.02e6)));
-        memoryModels.put("Inspiral", MemoryModel.constant(533.17e6, (long) (sqrt12*116.26e6)));
+        // TODO revert this to a realistic model
+        memoryModels.put("Inspiral", MemoryModel.constant(533.17e6, (long) (sqrt12*116.26e7)));
         memoryModels.put("Thinca", MemoryModel.constant(2.63e6, (long) (sqrt12*0.83e6)));
         memoryModels.put("TrigBank", MemoryModel.constant(2.04e6, (long) (sqrt12*0.14e6)));
 

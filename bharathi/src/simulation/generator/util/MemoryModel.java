@@ -79,7 +79,7 @@ public class MemoryModel{
     public long getPeakMemoryConsumption(long inputFileSize){
         Random errorGenerator = new Random(inputFileSize);
         int signum = errorGenerator.nextInt(3)-1;
-        return Math.max(0, (long) (inputFileSize*slope + intercept + signum*errorGenerator.nextLong()%(err+1)));
+        return Math.max(1, (long) (inputFileSize*slope + intercept + signum*errorGenerator.nextLong()%(err+1)));
     }
 
 

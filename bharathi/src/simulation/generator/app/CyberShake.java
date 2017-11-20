@@ -2,15 +2,13 @@ package simulation.generator.app;
 
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
-
 import org.griphyn.vdl.dax.PseudoText;
+import simulation.generator.util.Distribution;
 import simulation.generator.util.MemoryModel;
 import simulation.generator.util.Misc;
 
 import java.util.Arrays;
-
 import java.util.Set;
-import simulation.generator.util.Distribution;
 
 /**
  * @author Shishir Bharathi
@@ -196,7 +194,9 @@ public class CyberShake extends AbstractApplication {
 
         zipPSA.finish();
         zipSeis.finish();
+
     }
+
 
     @Override
     protected void populateDistributions() {
@@ -228,7 +228,8 @@ public class CyberShake extends AbstractApplication {
          */
         memoryModels.put("ExtractSGT", MemoryModel.constant(20.64e6, (long) (sqrt12*0.64e6)));
         // assume 90% of the variance in memory consumption is explained by input size
-        memoryModels.put("SeismogramSynthesis", new MemoryModel(1.49, 0., (long) (sqrt12*483e6*0.1)));
+        // TODO revert this to a realistic model, slope 1.49
+        memoryModels.put("SeismogramSynthesis", new MemoryModel(1000.49, 0., (long) (sqrt12*483e6*0.1)));
         memoryModels.put("ZipSeis", MemoryModel.constant(6.25e6, (long) (sqrt12*0.16e6)));
         memoryModels.put("PeakValCalcOkaya", MemoryModel.constant(3.11e6, (long) (sqrt12* 0.01e6)));
         memoryModels.put("ZipPSA", MemoryModel.constant(6.16e6, (long) (sqrt12* 0.16e6)));
@@ -264,6 +265,7 @@ class ExtractSGT extends AppJob {
 
         long peakMemory = cybershake.memoryModels.get("ExtractSGT").getPeakMemoryConsumption(2*size);
         double peakMemoryTimeRelative = cybershake.generateDouble("ExtractSGT_peak_mem_relative_time");
+        addAnnotation("input_total_bytes", ""+2*size);
         addAnnotation("peak_mem_bytes", ""+peakMemory);
         addArgument(new PseudoText(String.format("peak_mem_bytes=%d,peak_memory_relative_time=%.3f", peakMemory, peakMemoryTimeRelative)));
     }
@@ -310,6 +312,7 @@ class SeismogramSynthesis extends AppJob {
 
         long peakMemory = cybershake.memoryModels.get("SeismogramSynthesis").getPeakMemoryConsumption(size);
         double peakMemoryTimeRelative = cybershake.generateDouble("SeismogramSynthesis_peak_mem_relative_time");
+        addAnnotation("input_total_bytes", ""+size);
         addAnnotation("peak_mem_bytes", ""+peakMemory);
         addArgument(new PseudoText(String.format("peak_mem_bytes=%d,peak_memory_relative_time=%.3f", peakMemory, peakMemoryTimeRelative)));
 
@@ -330,6 +333,7 @@ class PeakValCalcOkaya extends AppJob {
 
         long peakMemory = cybershake.memoryModels.get("PeakValCalcOkaya").getPeakMemoryConsumption((long) (runtime*1e6));
         double peakMemoryTimeRelative = cybershake.generateDouble("PeakValCalcOkaya_peak_mem_relative_time");
+        addAnnotation("input_total_bytes", "0");
         addAnnotation("peak_mem_bytes", ""+peakMemory);
         addArgument(new PseudoText(String.format("peak_mem_bytes=%d,peak_memory_relative_time=%.3f", peakMemory, peakMemoryTimeRelative)));
     }
@@ -372,6 +376,7 @@ class ZipSeis extends AppJob {
 
         long peakMemory = cybershake.memoryModels.get("ZipSeis").getPeakMemoryConsumption(zipSize);
         double peakMemoryTimeRelative = cybershake.generateDouble("ZipSeis_peak_mem_relative_time");
+        addAnnotation("input_total_bytes", zipSize+"");
         addAnnotation("peak_mem_bytes", ""+peakMemory);
         addArgument(new PseudoText(String.format("peak_mem_bytes=%d,peak_memory_relative_time=%.3f", peakMemory, peakMemoryTimeRelative)));
     }
@@ -400,6 +405,7 @@ class ZipPSA extends AppJob {
 
         long peakMemory = cybershake.memoryModels.get("ZipPSA").getPeakMemoryConsumption(zipSize);
         double peakMemoryTimeRelative = cybershake.generateDouble("ZipPSA_peak_mem_relative_time");
+        addAnnotation("input_total_bytes", zipSize+"");
         addAnnotation("peak_mem_bytes", ""+peakMemory);
         addArgument(new PseudoText(String.format("peak_mem_bytes=%d,peak_memory_relative_time=%.3f", peakMemory, peakMemoryTimeRelative)));
     }

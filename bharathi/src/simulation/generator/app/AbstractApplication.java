@@ -6,6 +6,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 import simulation.generator.util.Distribution;
 import simulation.generator.util.MemoryModel;
 
@@ -70,4 +73,6 @@ public abstract class AbstractApplication implements Application {
     
     protected abstract void processArgs(String[] args);
     protected abstract void constructWorkflow();
+
+
 }

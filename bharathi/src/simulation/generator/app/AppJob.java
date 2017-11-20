@@ -17,7 +17,7 @@ import org.griphyn.vdl.dax.Profile;
 /**
  * @author Shishir Bharathi
  */
-abstract class AppJob extends Job {
+public abstract class AppJob extends Job {
 
     private final Application app;
     private final Set<AppFilename> inputs;
@@ -35,6 +35,10 @@ abstract class AppJob extends Job {
 
     void addAnnotation(String key, String value) {
         this.annotations.put(key, value);
+    }
+
+    public String getAnnotation(String key) {
+        return annotations.get(key);
     }
 
     Application getApp() {
