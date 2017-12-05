@@ -33,18 +33,17 @@
  ******************************************************************************/
 package simulation.generator.util;
 
+import org.apache.commons.math.distribution.NormalDistribution;
+import org.apache.commons.math.distribution.NormalDistributionImpl;
+
 import java.util.Random;
 
 /**
  * Created by Carl Witt on 13.11.17.
  * A relationship between a task's read amount of data (sum of input file sizes) and peak memory consumption.
- * We assume a deterministic behavior of memory consumption. Since we don't know a file's contents,
- * we assume two files of same size (which should be very rare for non-identical files) cause equal memory consumption.
- * We start from a linear model on input size, but we still want some unexplained (deterministic) variation, for which
- * we use a pseudo random number generator that is seeded with the file size.
+ * We start from a linear model on input size and add unexplained (normally distributed) variation.
  *
- * peak mem = slope * input size + intercept + random value in range [-err, +err]
- *
+ * peak mem = slope * input size + intercept + random value sampled from Normal(0, variance)
  */
 public class MemoryModel{
 
@@ -52,34 +51,37 @@ public class MemoryModel{
     final double slope;
     /** The axis intercept of the linear function. */
     final double intercept;
-    /** A bound on the deterministic random error that is applied to the model. */
-    final long err;
+    /** The random number generator used to generate the unexplained variation of the peak memory consumption (as opposed to the explained variation by the input file size). */
+    Random error;
+    /** The standard deviation of the error that is added to the linear model.*/
+    double errorStandardDeviation;
+
 
     /**
      * peak mem will be sampled from slope * input size + intercept + random value in range [-err, +err]
      * @param slope The slope of the linear function.
      * @param intercept The axis intercept of the linear function.
-     * @param err A bound on the deterministic random error that is applied to the model.
+     * @param errorStandardDeviation The standard deviation of the (zero mean) error added to the linear model.
      */
-    public MemoryModel(double slope, double intercept, long err) {
+    public MemoryModel(double slope, double intercept, double errorStandardDeviation) {
         this.slope = slope;
         this.intercept = intercept;
-        this.err = err;
+        this.errorStandardDeviation = errorStandardDeviation;
+        error = new Random();
     }
 
-    public static MemoryModel constant(double value, long err){
-        return new MemoryModel(0, value, err);
+    public static MemoryModel constant(double value, double errorStandardDeviation){
+        return new MemoryModel(0, value, errorStandardDeviation);
     }
 
     /**
-     * A random value following a linear model with some deterministic error (returns always the same value for the same input size, but not perfectly linear.)
+     * peak mem = slope * input size + intercept + random value sampled from Normal(0, variance)
+     * A random value following a linear model with some normally distributed error.
      * @param inputFileSize The size of the input file, usually in bytes.
-     * @return a random value following the memory model.
+     * @return a random value ≥ 1 according to the model.
      */
     public long getPeakMemoryConsumption(long inputFileSize){
-        Random errorGenerator = new Random(inputFileSize);
-        int signum = errorGenerator.nextInt(3)-1;
-        return Math.max(1, (long) (inputFileSize*slope + intercept + signum*errorGenerator.nextLong()%(err+1)));
+        return Math.max(1, (long) (inputFileSize*slope + intercept + error.nextGaussian()*errorStandardDeviation));
     }
 
 

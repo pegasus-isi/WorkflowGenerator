@@ -208,7 +208,7 @@ public class CyberShake extends AbstractApplication {
         distributions.put("SUB_SGT", Distribution.getTruncatedNormalDistribution(231720131.58, 27081652820787388.00));
         distributions.put("SLIP", Distribution.getUniformDistribution(0, 10000));
         distributions.put("HIPO", Distribution.getUniformDistribution(0, 10000));
-        distributions.put("VARIATION", Distribution.getTruncatedNormalDistribution(3708598.53, 10160641539133.56));
+        distributions.put("VARIATION", Distribution.getTruncatedNormalDistribution(3708598.53, 3187576.*3187576.));
         distributions.put("GRM", Distribution.getConstantDistribution(24000));
         distributions.put("BSA", Distribution.getConstantDistribution(216));
         distributions.put("ZipSeis_factor", Distribution.getConstantDistribution(6));
@@ -226,13 +226,13 @@ public class CyberShake extends AbstractApplication {
         /*
          * Memory models.
          */
-        memoryModels.put("ExtractSGT", MemoryModel.constant(20.64e6, (long) (sqrt12*0.64e6)));
+        memoryModels.put("ExtractSGT", MemoryModel.constant(20.64e6, 0.64e6));
         // assume 90% of the variance in memory consumption is explained by input size
         // TODO revert this to a realistic model, slope 1.49
-        memoryModels.put("SeismogramSynthesis", new MemoryModel(1000.49, 0., (long) (sqrt12*483e6*0.1)));
-        memoryModels.put("ZipSeis", MemoryModel.constant(6.25e6, (long) (sqrt12*0.16e6)));
-        memoryModels.put("PeakValCalcOkaya", MemoryModel.constant(3.11e6, (long) (sqrt12* 0.01e6)));
-        memoryModels.put("ZipPSA", MemoryModel.constant(6.16e6, (long) (sqrt12* 0.16e6)));
+        memoryModels.put("SeismogramSynthesis", new MemoryModel(1000.49, 0., 483e6*0.1));
+        memoryModels.put("ZipSeis", MemoryModel.constant(6.25e6, 0.16e6));
+        memoryModels.put("PeakValCalcOkaya", MemoryModel.constant(3.11e6,  0.01e6));
+        memoryModels.put("ZipPSA", MemoryModel.constant(6.16e6,  0.16e6));
 
         /*
          * Peak memory relative time distributions.

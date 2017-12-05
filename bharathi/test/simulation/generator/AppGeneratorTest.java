@@ -18,7 +18,9 @@ import java.util.stream.StreamSupport;
 /**
  * Created by Carl Witt on 03.11.17.
  *
- * @author Carl Witt (cpw@posteo.de)
+ * The dax.new2 format added relative time to failure values (I think).
+ * The dax.new3 format switched from a uniform error model to a normally distributed error model.
+ * 
  */
 class AppGeneratorTest {
 
@@ -84,7 +86,7 @@ class AppGeneratorTest {
                 System.out.printf("min peak mem = %s MB%n", getPeakMems(app.getDAX()).min().getAsLong() / 1e6);
                 System.out.printf("max peak mem = %s MB%n", getPeakMems(app.getDAX()).max().getAsLong() / 1e6);
                 // write to text file
-                String filename = String.format("results/%s.n.%d.0.dax.new2", app.getClass().getSimpleName(), numTasks);
+                String filename = String.format("results/%s.n.%d.0.dax.new3", app.getClass().getSimpleName(), numTasks);
                 FileOutputStream fop = new FileOutputStream(new File(filename));
                 app.printWorkflow(fop);
                 fop.close();
