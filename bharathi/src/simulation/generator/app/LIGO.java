@@ -344,7 +344,7 @@ public class LIGO extends AbstractApplication {
          */
         memoryModels.put("TmpltBank", MemoryModel.constant(404.54e6, 0.02e6));
         // TODO revert this to a realistic model, original value for standard deviation was 116.26e6
-        memoryModels.put("Inspiral", MemoryModel.constant(533.17e6, 1162.6e6));
+        memoryModels.put("Inspiral", MemoryModel.constant(3000e6, 800.6e6));
         memoryModels.put("Thinca", MemoryModel.constant(2.63e6, 0.83e6));
         memoryModels.put("TrigBank", MemoryModel.constant(2.04e6, 0.14e6));
 

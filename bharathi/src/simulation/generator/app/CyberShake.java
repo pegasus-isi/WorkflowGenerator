@@ -229,7 +229,7 @@ public class CyberShake extends AbstractApplication {
         memoryModels.put("ExtractSGT", MemoryModel.constant(20.64e6, 0.64e6));
         // assume 90% of the variance in memory consumption is explained by input size
         // TODO revert this to a realistic model, slope 1.49
-        memoryModels.put("SeismogramSynthesis", new MemoryModel(1000.49, 0., 483e6*0.1));
+        memoryModels.put("SeismogramSynthesis", new MemoryModel(10., 2500e6, 483e6));
         memoryModels.put("ZipSeis", MemoryModel.constant(6.25e6, 0.16e6));
         memoryModels.put("PeakValCalcOkaya", MemoryModel.constant(3.11e6,  0.01e6));
         memoryModels.put("ZipPSA", MemoryModel.constant(6.16e6,  0.16e6));

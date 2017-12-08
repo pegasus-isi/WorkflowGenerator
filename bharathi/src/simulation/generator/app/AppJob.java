@@ -17,7 +17,7 @@ import org.griphyn.vdl.dax.Profile;
 /**
  * @author Shishir Bharathi
  */
-public abstract class AppJob extends Job {
+public class AppJob extends Job {
 
     private final Application app;
     private final Set<AppFilename> inputs;

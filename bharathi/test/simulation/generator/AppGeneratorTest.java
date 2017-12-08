@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport;
  *
  * The dax.new2 format added relative time to failure values (I think).
  * The dax.new3 format switched from a uniform error model to a normally distributed error model.
- * 
+ *
  */
 class AppGeneratorTest {
 
@@ -49,6 +49,24 @@ class AppGeneratorTest {
             System.out.printf("job %s\n%s%n", next.getName(), next.getArgument(0));
         }
 //        app.printWorkflow(System.out);
+    }
+
+    @Test
+    void generateYarnStarvationTest() throws Exception {
+
+        for(String minute : new String[]{"3", "25", "500"}){
+
+            // generate workflow
+            YarnStarvationTest test = new YarnStarvationTest();
+            test.generateWorkflow(minute);
+
+            // write to file
+            String filename = String.format("results/yarn-starvation-test/yarn-starvation-v3-%s-minutes.dax", minute);
+            FileOutputStream fop = new FileOutputStream(new File(filename));
+            test.printWorkflow(fop);
+            fop.close();
+        }
+
     }
 
     private LongStream getPeakMems(ADAG dax){
