@@ -11,11 +11,11 @@ public class AppFactory {
     
     static {
         appMap = new HashMap<String, Application>();
-        appMap.put("LIGO", new LIGO());
+        appMap.put("Ligo", new Ligo());
         appMap.put("GENOME", new Genome());
         appMap.put("MONTAGE", new Montage());
         appMap.put("SIPHT", new SIPHT());
-        appMap.put("CYBERSHAKE", new CyberShake());
+        appMap.put("CYBERSHAKE", new Cybershake());
     }
     
     public static Application getApp(String appName) throws Exception {

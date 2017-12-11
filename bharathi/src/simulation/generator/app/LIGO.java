@@ -18,9 +18,9 @@ import simulation.generator.util.Distribution;
 /**
  * @author Shishir Bharathi
  */
-public class LIGO extends AbstractApplication {
+public class Ligo extends AbstractApplication {
 
-    public static final String namespace = "LIGO";
+    public static final String namespace = "Ligo";
     private static final double OVERLAP_FACTOR = 1.05;
     private static final int MAX_TRIES = 100;
     private double runtimeFactor = 1;
@@ -33,7 +33,7 @@ public class LIGO extends AbstractApplication {
     }
 
     private void usage(int exitCode) {
-        String msg = "LIGO [-h] [options]." +
+        String msg = "Ligo [-h] [options]." +
                 "\n--data | -d Approximate size of input data." +
                 "\n--factor | -f Avg. runtime to execute an TmpltBank job." +
                 "\n--help | -h Print help message." +
@@ -57,7 +57,7 @@ public class LIGO extends AbstractApplication {
         longopts[2] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
         longopts[3] = new LongOpt("numjobs", LongOpt.REQUIRED_ARGUMENT, null, 'n');
 
-        Getopt g = new Getopt("Genome", args, "d:f:hn:", longopts);
+        Getopt g = new Getopt("Ligo", args, "d:f:hn:", longopts);
         g.setOpterr(false);
         
         double factor = 1.0;
@@ -383,8 +383,8 @@ class TmpltBank extends AppJob {
     public static final String REF_DARM = String.format("H-CAL_REF_DARM_ERR_H1_S5_V1-%d-8.gwf",
             Misc.randomInt(800000000, 0.1));
 
-    public TmpltBank(LIGO ligo, String name, String version, String jobID) {
-        super(ligo, LIGO.namespace, name, version, jobID);
+    public TmpltBank(Ligo ligo, String name, String version, String jobID) {
+        super(ligo, Ligo.namespace, name, version, jobID);
         this.setLevel(0);
         double runtime = ligo.generateDouble("TmpltBank") * ligo.getRuntimeFactor();
         addAnnotation("runtime", String.format("%.2f", runtime));
@@ -404,7 +404,7 @@ class TmpltBank extends AppJob {
     @Override
     public void addChild(AppJob child) {
         String name = String.format("H1-TMPLTBANK-%d-2048.xml", Misc.randomInt(800000000, 0.1));
-        long size = ((LIGO) getApp()).generateLong("TMPLTBANK.xml");
+        long size = ((Ligo) getApp()).generateLong("TMPLTBANK.xml");
         addLink(child, name, size);
     }
 }
@@ -414,9 +414,9 @@ class Inspiral extends AppJob {
     private static final int INJECTION_KEY1 = Misc.randomInt(800000000, 0.1);
     private static final int INJECTION_KEY2 = Misc.randomInt(8000000, 0.1);
 
-    public Inspiral(LIGO ligo, String name, String version, String jobID, int level,
-            int id) {
-        super(ligo, LIGO.namespace, name, version, jobID);
+    public Inspiral(Ligo ligo, String name, String version, String jobID, int level,
+                    int id) {
+        super(ligo, Ligo.namespace, name, version, jobID);
         this.setLevel(level);
         /*
          * All inspirals use the same injections file.
@@ -444,11 +444,11 @@ class Inspiral extends AppJob {
         for (AppFilename input : inputs) {
             if (input.getFilename().contains("TMPLTBANK")) {
                 String filename = input.getFilename().replace("TMPLTBANK", "INSPIRAL");
-                long size = ((LIGO) getApp()).generateLong("INSPIRAL.xml");
+                long size = ((Ligo) getApp()).generateLong("INSPIRAL.xml");
                 addLink(child, filename, size);
             } else if (input.getFilename().contains("TRIGBANK")) {
                 String filename = input.getFilename().replace("TRIGBANK", "INSPIRAL");
-                long size = ((LIGO) getApp()).generateLong("INSPIRAL.xml");
+                long size = ((Ligo) getApp()).generateLong("INSPIRAL.xml");
                 addLink(child, filename, size);
             }
         }
@@ -457,8 +457,8 @@ class Inspiral extends AppJob {
 
 class Thinca extends AppJob {
     
-    public Thinca(LIGO ligo, String name, String version, String jobID, int level) {
-        super(ligo, LIGO.namespace, name, version, jobID);
+    public Thinca(Ligo ligo, String name, String version, String jobID, int level) {
+        super(ligo, Ligo.namespace, name, version, jobID);
         this.setLevel(level);
         double runtime = ligo.generateDouble("Thinca") * ligo.getRuntimeFactor();
         addAnnotation("runtime", String.format("%.2f", runtime));
@@ -487,7 +487,7 @@ class Thinca extends AppJob {
                 }
             }
         }
-        long size = ((LIGO) getApp()).generateInt("THINCA.xml");
+        long size = ((Ligo) getApp()).generateInt("THINCA.xml");
         if (child != null) {
             addLink(child, filename, size);
         } else {
@@ -507,8 +507,8 @@ class Thinca extends AppJob {
 
 class TrigBank extends AppJob {
     
-    public TrigBank(LIGO ligo, String name, String version, String jobID) {
-        super(ligo, LIGO.namespace, name, version, jobID);
+    public TrigBank(Ligo ligo, String name, String version, String jobID) {
+        super(ligo, Ligo.namespace, name, version, jobID);
         this.setLevel(3);
         double runtime = ligo.generateDouble("TrigBank") * ligo.getRuntimeFactor();
         addAnnotation("runtime", String.format("%.2f", runtime * ligo.getRuntimeFactor()));
@@ -534,7 +534,7 @@ class TrigBank extends AppJob {
         }
         String filename = String.format("H1-TRIGBANK_%s-%d-%d.xml", prefix,
                 Misc.randomInt(800000000, 0.1), Misc.randomInt(0, 10000));
-        long size = ((LIGO) getApp()).generateLong("TRIGBANK.xml");
+        long size = ((Ligo) getApp()).generateLong("TRIGBANK.xml");
         addLink(child, filename, size);
     }
 }

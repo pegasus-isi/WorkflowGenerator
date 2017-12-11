@@ -1,19 +1,15 @@
 package simulation.generator;
 
-import org.griphyn.vdl.dax.ADAG;
 import org.griphyn.vdl.dax.Job;
 import org.junit.jupiter.api.Test;
 import simulation.generator.app.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Carl Witt on 03.11.17.
@@ -30,7 +26,7 @@ class AppGeneratorTest {
         // avoid setting getting comma decimal separators for German locale
         Locale.setDefault(new Locale("EN_us")); //Locale.setDefault();//setDefault(new Locale());
 
-        Application app = new CyberShake();
+        Application app = new Cybershake();
 
         String[] args = new String[]{
 //            "--data", "100",                   // -d Approximate size of input data.
@@ -69,65 +65,68 @@ class AppGeneratorTest {
 
     }
 
-    private LongStream getPeakMems(ADAG dax){
-        Iterable iterable = dax::iterateJob;
-        Stream<AppJob> targetStream = StreamSupport.stream(iterable.spliterator(), false);
-        return targetStream.mapToLong(j -> Long.parseLong(j.getAnnotation("peak_mem_bytes")));
-    }
-
     @Test
     void generateSipht() throws Exception{
         SIPHT sipht = new SIPHT();
-        sipht.generateWorkflow("-n", ""+10000);
+        sipht.generateWorkflow("-n", "400");
         sipht.printWorkflow(System.out);
 
     }
     @Test
     void generateWorkflows() throws Exception {
 
+        String targetDir = "results/new4/";
+
+        // avoid mixing up commas and dots when converting floating points to string (german vs. english locales)
         Locale.setDefault(new Locale("EN_us")); //Locale.setDefault();//setDefault(new Locale());
 
-        Application[] applications = {
-                new CyberShake(),
-                new LIGO(),
+        AbstractApplication[] applications = {
+                new Cybershake(),
+                new Ligo(),
 //                new Montage(),
 //                new SIPHT(),
         };
 
+        // contains the csv line per workflow file
+        StringBuffer workflowStatisticsCsv = new StringBuffer();
+        workflowStatisticsCsv.append("file,num_tasks,total_runtime_seconds,total_spacetime_megabyteseconds,minimum_peak_memory_mb,maximum_peak_memory_mb\n");
+
+
         for(Integer numTasks : new int[]{50,500,600,800,1000,2000}) {
-            for (Application app : applications) {
+            for (AbstractApplication app : applications) {
 
                 // generate dax
                 app.generateWorkflow("-n", numTasks.toString());
 
-                System.out.println("app = " + app.getClass().getSimpleName());
-                System.out.printf("min peak mem = %s MB%n", getPeakMems(app.getDAX()).min().getAsLong() / 1e6);
-                System.out.printf("max peak mem = %s MB%n", getPeakMems(app.getDAX()).max().getAsLong() / 1e6);
+                AbstractApplication.WorkflowStatistics statistics = app.getStatistics();
+
                 // write to text file
-                String filename = String.format("results/%s.n.%d.0.dax.new3", app.getClass().getSimpleName(), numTasks);
-                FileOutputStream fop = new FileOutputStream(new File(filename));
+                String filename = String.format("%s.n.%d.0.dax.new3", app.getClass().getSimpleName(), statistics.numberOfTasks);
+                FileOutputStream fop = new FileOutputStream(new File(targetDir +filename));
                 app.printWorkflow(fop);
                 fop.close();
 
+                workflowStatisticsCsv.append(String.format("%s,%s,%s,%s,%s,%s\n",filename, statistics.numberOfTasks, statistics.totalRuntimeSeconds, statistics.totalSpacetimeMegabyteSeconds, 1e-6*statistics.minimumPeakMemory, 1e-6*statistics.maximumPeakMemoryBytes));
+
                 // write out memory distributions
-                if(numTasks==2000){
-                    FileWriter fileWriter = new FileWriter("evaluation/sampled-peak-mem-"+app.getClass().getSimpleName()+".csv");
-
-                    Iterable iterable = app.getDAX()::iterateJob;
-                    Stream<AppJob> targetStream = StreamSupport.stream(iterable.spliterator(), false);
-                    fileWriter.write(String.format("task_type,input_size_total_bytes,peak_mem_bytes\n"));
-                    targetStream.forEach(j -> {
-                        try {
-                            fileWriter.write(String.format("%s,%s,%s%n",j.getName(),j.getAnnotation("input_total_bytes"),j.getAnnotation("peak_mem_bytes")));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                    fileWriter.close();
-                }
+//                if(numTasks==2000){
+//                    FileWriter fileWriter = new FileWriter("evaluation/sampled-peak-mem-"+app.getClass().getSimpleName()+".csv");
+//
+//                    Iterable iterable = app.getDAX()::iterateJob;
+//                    Stream<AppJob> targetStream = StreamSupport.stream(iterable.spliterator(), false);
+//                    fileWriter.write(String.format("task_type,input_size_total_bytes,peak_mem_bytes\n"));
+//                    targetStream.forEach(j -> {
+//                        try {
+//                            fileWriter.write(String.format("%s,%s,%s%n",j.getName(),j.getAnnotation("input_total_bytes"),j.getAnnotation("peak_mem_bytes")));
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    });
+//                    fileWriter.close();
+//                }
             }
-
         }
+        Files.write(Paths.get(targetDir+"/workflowStatistics.csv"), workflowStatisticsCsv.toString().getBytes());
     }
 
 

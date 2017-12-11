@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * @author Shishir Bharathi
  */
-public class CyberShake extends AbstractApplication {
+public class Cybershake extends AbstractApplication {
 
     private static final int MAX_RUPTURES = 30;
     private static final int MAX_VARIATIONS = 30;
@@ -27,13 +27,13 @@ public class CyberShake extends AbstractApplication {
         CCP, DLA, FFI, LADT, LBP, PAS, SABD, SBSM, SMCA, USC, WNGC
     };
     
-    public static final String NAMESPACE = "CyberShake";
+    public static final String NAMESPACE = "Cybershake";
     private SITE site;
     private int[] counts;
     private int numExtractSGT;
 
     private void usage(int exitCode) {
-        String msg = "CyberShake [-h] [options]." +
+        String msg = "Cybershake [-h] [options]." +
                 "\n--data | -d Approximate size of input dataset." +
                 "\n--factor | -f Avg. runtime to execute an seismogram_synthesis job." +
                 "\n--help | -h Print help message." +
@@ -69,7 +69,7 @@ public class CyberShake extends AbstractApplication {
         longopts[6] = new LongOpt("variations", LongOpt.REQUIRED_ARGUMENT,
                 null, 'v');
 
-        Getopt g = new Getopt("CyberShake", args, "d:f:hn:r:s:v:", longopts);
+        Getopt g = new Getopt("Cybershake", args, "d:f:hn:r:s:v:", longopts);
         g.setOpterr(false);
 
         int numJobs = 0;
@@ -252,8 +252,8 @@ class ExtractSGT extends AppJob {
     private final String prefix;
     private SeismogramSynthesis lastChild;
 
-    public ExtractSGT(CyberShake cybershake, String name, String version, String jobID, String prefix) {
-        super(cybershake, CyberShake.NAMESPACE, name, version, jobID);
+    public ExtractSGT(Cybershake cybershake, String name, String version, String jobID, String prefix) {
+        super(cybershake, Cybershake.NAMESPACE, name, version, jobID);
         this.prefix = prefix;
 
         long size = cybershake.generateLong("SGT");
@@ -271,7 +271,7 @@ class ExtractSGT extends AppJob {
     }
 
     public void addChild(AppJob child) {
-        long subSize = ((CyberShake) getApp()).generateLong("SUB_SGT");
+        long subSize = ((Cybershake) getApp()).generateLong("SUB_SGT");
         addLink(child, prefix + "_subfx.sgt", subSize);
         addLink(child, prefix + "_subfy.sgt", subSize);
         lastChild = (SeismogramSynthesis) child;
@@ -294,8 +294,8 @@ class SeismogramSynthesis extends AppJob {
     private final String prefix;
     private final String jobID;
 
-    public SeismogramSynthesis(CyberShake cybershake, String name, String version, String jobID, String prefix) {
-        super(cybershake, CyberShake.NAMESPACE, name, version, jobID);
+    public SeismogramSynthesis(Cybershake cybershake, String name, String version, String jobID, String prefix) {
+        super(cybershake, Cybershake.NAMESPACE, name, version, jobID);
         this.prefix = prefix;
         this.jobID = jobID;
 
@@ -320,13 +320,13 @@ class SeismogramSynthesis extends AppJob {
 
     @Override
     public void addChild(AppJob child) {
-        addLink(child, "Seismogram_" + prefix + "_" + jobID + ".grm", ((CyberShake) getApp()).generateLong("GRM"));
+        addLink(child, "Seismogram_" + prefix + "_" + jobID + ".grm", ((Cybershake) getApp()).generateLong("GRM"));
     }
 }
 class PeakValCalcOkaya extends AppJob {
 
-    public PeakValCalcOkaya(CyberShake cybershake, String name, String version, String jobID) {
-        super(cybershake, CyberShake.NAMESPACE, name, version, jobID);
+    public PeakValCalcOkaya(Cybershake cybershake, String name, String version, String jobID) {
+        super(cybershake, Cybershake.NAMESPACE, name, version, jobID);
 
         double runtime = cybershake.generateDouble("PeakValCalcOkaya") * cybershake.getRuntimeFactor();
         addAnnotation("runtime", String.format("%.2f", runtime * cybershake.getRuntimeFactor()));
@@ -346,7 +346,7 @@ class PeakValCalcOkaya extends AppJob {
                 String temp = input.getFilename();
                 temp = temp.replace("Seismogram", "PeakVals");
                 temp = temp.replace("grm", "bsa");
-                addLink(child, temp, ((CyberShake) getApp()).generateLong("BSA"));
+                addLink(child, temp, ((Cybershake) getApp()).generateLong("BSA"));
                 break;
             }
         }
@@ -355,9 +355,9 @@ class PeakValCalcOkaya extends AppJob {
 
 class ZipSeis extends AppJob {
 
-    CyberShake cybershake;
-    public ZipSeis(CyberShake cybershake, String name, String version, String jobID) {
-        super(cybershake, CyberShake.NAMESPACE, name, version, jobID);
+    Cybershake cybershake;
+    public ZipSeis(Cybershake cybershake, String name, String version, String jobID) {
+        super(cybershake, Cybershake.NAMESPACE, name, version, jobID);
         this.cybershake = cybershake;
 
     }
@@ -368,10 +368,10 @@ class ZipSeis extends AppJob {
          * Hack.
          */
         Set<AppFilename> inputs = getInputs();
-        long zipSize = Misc.randomLong((long) (inputs.size() * ((CyberShake) getApp()).generateLong("GRM") / ((CyberShake) getApp()).generateDouble("ZipSeis_factor")), 0.25);
+        long zipSize = Misc.randomLong((long) (inputs.size() * ((Cybershake) getApp()).generateLong("GRM") / ((Cybershake) getApp()).generateDouble("ZipSeis_factor")), 0.25);
 
         output("Cybershake_Seismograms.zip", zipSize);
-        double runtime = zipSize * ((CyberShake) getApp()).getRuntimeFactor() / ((CyberShake) getApp()).generateDouble("ZipSeis_rate");
+        double runtime = zipSize * ((Cybershake) getApp()).getRuntimeFactor() / ((Cybershake) getApp()).generateDouble("ZipSeis_rate");
         addAnnotation("runtime", String.format("%.2f", runtime));
 
         long peakMemory = cybershake.memoryModels.get("ZipSeis").getPeakMemoryConsumption(zipSize);
@@ -384,10 +384,10 @@ class ZipSeis extends AppJob {
 
 class ZipPSA extends AppJob {
 
-    CyberShake cybershake;
+    Cybershake cybershake;
 
-    public ZipPSA(CyberShake cybershake, String name, String version, String jobID) {
-        super(cybershake, CyberShake.NAMESPACE, name, version, jobID);
+    public ZipPSA(Cybershake cybershake, String name, String version, String jobID) {
+        super(cybershake, Cybershake.NAMESPACE, name, version, jobID);
         this.cybershake = cybershake;
     }
 
@@ -396,11 +396,11 @@ class ZipPSA extends AppJob {
          * Hack.
          */
         Set<AppFilename> inputs = getInputs();
-        long zipSize = Misc.randomLong((long) (inputs.size() * ((CyberShake) getApp()).generateLong("BSA") / ((CyberShake) getApp()).generateDouble("ZipSeis_factor")), 0.25);
+        long zipSize = Misc.randomLong((long) (inputs.size() * ((Cybershake) getApp()).generateLong("BSA") / ((Cybershake) getApp()).generateDouble("ZipSeis_factor")), 0.25);
 
         output("Cybershake_PSA.zip", zipSize);
 
-        double runtime = zipSize * ((CyberShake) getApp()).getRuntimeFactor() / ((CyberShake) getApp()).generateDouble("ZipPSA_rate");
+        double runtime = zipSize * ((Cybershake) getApp()).getRuntimeFactor() / ((Cybershake) getApp()).generateDouble("ZipPSA_rate");
         addAnnotation("runtime", String.format("%.2f", runtime));
 
         long peakMemory = cybershake.memoryModels.get("ZipPSA").getPeakMemoryConsumption(zipSize);
