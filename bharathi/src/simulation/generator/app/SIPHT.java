@@ -16,7 +16,7 @@ public class SIPHT extends AbstractApplication {
     public static final String NAMESPACE = "SIPHT";
     public static final String CODE = "NC_0025AG05";
     private static final int MEAN_PATSERS = 18;
-    private int PARTNER_FACTOR = 936;
+    private final int PARTNER_FACTOR = 936;
     private double runtimeFactor = 1.0;
     private int numJobs;
 
@@ -27,7 +27,10 @@ public class SIPHT extends AbstractApplication {
          * Distributions for variables used by all jobs are collected here.
          * Eventually, support picking this information from external source.
          */
-        
+
+        /*
+         * File size distributions.
+         */
         this.distributions.put("IGR_partners", Distribution.getUniformDistribution(0.9 * PARTNER_FACTOR, PARTNER_FACTOR));
         double FNA_SIZE = Misc.truncatedNormal(5248967.25, 2301068882937.69);
         this.distributions.put("CODE.fna", Distribution.getConstantDistribution(FNA_SIZE));
@@ -121,13 +124,16 @@ public class SIPHT extends AbstractApplication {
 
         this.distributions.put("CODE_paralogues.txt", Distribution.getTruncatedNormalDistribution(690731.5, 362706549090.75));
 
-        this.distributions.put("Findterm", Distribution.getTruncatedNormalDistribution(1349.47, 635206.26));
+        /*
+         * Runtime distributions.
+         */
+        this.distributions.put("Findterm", Distribution.getTruncatedNormalDistribution(1349.47, 796*796d));
         this.distributions.put("Findterm_mean", Distribution.getConstantDistribution(1349.47));
-        this.distributions.put("Transterm", Distribution.getTruncatedNormalDistribution(55.78, 2356.11));
+        this.distributions.put("Transterm", Distribution.getTruncatedNormalDistribution(55.78, 48*48));
         this.distributions.put("RNAMotif", Distribution.getTruncatedNormalDistribution(36.42, 78.15));
-        this.distributions.put("Blast", Distribution.getTruncatedNormalDistribution(2350.58, 1033834.66));
+        this.distributions.put("Blast", Distribution.getTruncatedNormalDistribution(2350.58, 1016*1016d));
         this.distributions.put("FFN_parse", Distribution.getTruncatedNormalDistribution(1.64, 0.06));
-        this.distributions.put("SRNA", Distribution.getTruncatedNormalDistribution(361.33, 117451.46));
+        this.distributions.put("SRNA", Distribution.getTruncatedNormalDistribution(361.33, 342*342));
         this.distributions.put("Blast_paralogues", Distribution.getTruncatedNormalDistribution(4.99, 1.32));
         this.distributions.put("Blast_candidate", Distribution.getTruncatedNormalDistribution(5.18, 0.99));
         this.distributions.put("Blast_QRNA", Distribution.getTruncatedNormalDistribution(1412.09, 9702.26));
@@ -200,12 +206,12 @@ public class SIPHT extends AbstractApplication {
         
         int remaining = numJobs - count * 13;
         int[] countJobs = Misc.closeNonZeroRandoms(count, remaining, 0.2);
-        for (int i = 0; i < countJobs.length; i++) {
-            constructSubWorkflow(countJobs[i]);
+        for (int countJob : countJobs) {
+            constructSubWorkflow(countJob);
         }
     }
 
-    protected void constructSubWorkflow(int remaining) {
+    private void constructSubWorkflow(int remaining) {
         if (remaining <= 0) {
             throw new RuntimeException("Cannot construct workflow with numJobs=" + (remaining + 13));
         }
@@ -341,7 +347,7 @@ class Blast extends AppJob {
 
 class Patser extends AppJob {
 
-    private String jobID;
+    private final String jobID;
 
     public Patser(SIPHT sipht, String name, String version, String jobID) {
         super(sipht, SIPHT.NAMESPACE, name, version, jobID);

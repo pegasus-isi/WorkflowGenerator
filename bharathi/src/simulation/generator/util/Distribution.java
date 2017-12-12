@@ -48,9 +48,9 @@ public abstract class Distribution {
 
 class TruncatedNormalDistribution extends Distribution {
 
-    private double mean;
-    private double variance;
-    private double scalingFactor;
+    private final double mean;
+    private final double variance;
+    private final double scalingFactor;
 
     public TruncatedNormalDistribution(double mean, double variance, double scalingFactor) {
         this.mean = mean;
@@ -65,7 +65,7 @@ class TruncatedNormalDistribution extends Distribution {
 
 class ConstantDistribution extends Distribution {
 
-    private double value;
+    private final double value;
 
     /*
      * We don't really need to separate value and scalingFactor for
@@ -85,9 +85,9 @@ class ConstantDistribution extends Distribution {
 
 class UniformDistribution extends Distribution {
 
-    private double min;
-    private double max;
-    private double scalingFactor;
+    private final double min;
+    private final double max;
+    private final double scalingFactor;
 
     public UniformDistribution(double min, double max, double scalingFactor) {
         this.min = min;

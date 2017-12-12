@@ -10,11 +10,10 @@ public class Moderate implements Connection {
     /*
      * Create fewer connections between parent level and child level.
      */
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public int getNumConnections(double numChildren, double numParents) {
         double min = numChildren / numParents;
-        double max = numChildren;
 
         double r = random.nextGaussian();
 
@@ -29,6 +28,6 @@ public class Moderate implements Connection {
          * = (min + max + min - min)/2
          * = min + (max - min)/2
          */
-        return (int) Math.ceil(min + ((r * (max - min)) / 2));
+        return (int) Math.ceil(min + ((r * (numChildren - min)) / 2));
     }
 }

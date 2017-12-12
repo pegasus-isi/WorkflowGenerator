@@ -2,6 +2,8 @@ package simulation.generator.app;
 
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
+import org.griphyn.vdl.dax.PseudoText;
+import simulation.generator.util.MemoryModel;
 import simulation.generator.util.Misc;
 import java.util.Set;
 
@@ -16,9 +18,9 @@ import simulation.generator.util.Distribution;
 /**
  * @author Shishir Bharathi
  */
-public class LIGO extends AbstractApplication {
+public class Ligo extends AbstractApplication {
 
-    public static final String namespace = "LIGO";
+    public static final String namespace = "Ligo";
     private static final double OVERLAP_FACTOR = 1.05;
     private static final int MAX_TRIES = 100;
     private double runtimeFactor = 1;
@@ -31,7 +33,7 @@ public class LIGO extends AbstractApplication {
     }
 
     private void usage(int exitCode) {
-        String msg = "LIGO [-h] [options]." +
+        String msg = "Ligo [-h] [options]." +
                 "\n--data | -d Approximate size of input data." +
                 "\n--factor | -f Avg. runtime to execute an TmpltBank job." +
                 "\n--help | -h Print help message." +
@@ -55,7 +57,7 @@ public class LIGO extends AbstractApplication {
         longopts[2] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
         longopts[3] = new LongOpt("numjobs", LongOpt.REQUIRED_ARGUMENT, null, 'n');
 
-        Getopt g = new Getopt("Genome", args, "d:f:hn:", longopts);
+        Getopt g = new Getopt("Ligo", args, "d:f:hn:", longopts);
         g.setOpterr(false);
         
         double factor = 1.0;
@@ -147,38 +149,38 @@ public class LIGO extends AbstractApplication {
 
     public void constructWorkflow() {
 
-        List<TmpltBank> tmpltBanks = new ArrayList<TmpltBank>();
+        List<TmpltBank> tmpltBanks = new ArrayList<>();
         for (int i = 0; i <
                 topDown[0]; i++) {
             TmpltBank t = new TmpltBank(this, "TmpltBank", "1.0", getNewJobID());
             tmpltBanks.add(t);
         }
 
-        List<Inspiral> upperInspirals = new ArrayList<Inspiral>();
+        List<Inspiral> upperInspirals = new ArrayList<>();
         for (int i = 0; i <
                 topDown[0]; i++) {
             upperInspirals.add(new Inspiral(this, "Inspiral", "1.0", getNewJobID(), 1, i));
         }
 
-        List<Thinca> upperThincas = new ArrayList<Thinca>();
+        List<Thinca> upperThincas = new ArrayList<>();
         for (int i = 0; i <
                 bnCount; i++) {
             upperThincas.add(new Thinca(this, "Thinca", "1.0", getNewJobID(), 2));
         }
 
-        List<TrigBank> trigBanks = new ArrayList<TrigBank>();
+        List<TrigBank> trigBanks = new ArrayList<>();
         for (int i = 0; i <
                 topDown[1]; i++) {
             trigBanks.add(new TrigBank(this, "TrigBank", "1.0", getNewJobID()));
         }
 
-        List<Inspiral> lowerInspirals = new ArrayList<Inspiral>();
+        List<Inspiral> lowerInspirals = new ArrayList<>();
         for (int i = 0; i <
                 topDown[1]; i++) {
             lowerInspirals.add(new Inspiral(this, "Inspiral", "1.0", getNewJobID(), 4, i));
         }
 
-        List<Thinca> lowerThincas = new ArrayList<Thinca>();
+        List<Thinca> lowerThincas = new ArrayList<>();
         for (int i = 0; i <
                 bnCount; i++) {
             lowerThincas.add(new Thinca(this, "Thinca", "1.0", getNewJobID(), 5));
@@ -186,7 +188,7 @@ public class LIGO extends AbstractApplication {
 
         for (int i = 0; i <
                 topDown[0]; i++) {
-            Set<AppFilename> inputs = new HashSet<AppFilename>();
+            Set<AppFilename> inputs = new HashSet<>();
             inputs.add(new AppFilename(String.format("H-H1_RDS_L4-%d-1024.gwf",
                     TmpltBank.KEY1 + i), LFN.INPUT,
                     generateLong("GWF")));
@@ -206,7 +208,7 @@ public class LIGO extends AbstractApplication {
 
         for (int i = topDown[0]; i <
                 topDown[1]; i++) {
-            Set<AppFilename> inputs = new HashSet<AppFilename>();
+            Set<AppFilename> inputs = new HashSet<>();
             inputs.add(new AppFilename(String.format("H-H2_RDS_L4-%d-1024.gwf",
                     TmpltBank.KEY1 + i), LFN.INPUT,
                     generateLong("GWF")));
@@ -236,8 +238,8 @@ public class LIGO extends AbstractApplication {
             throw new RuntimeException("Count: " + totalEdges);
         } else {
             int sum = 0;
-            for (int i = 0; i < bnSet.length; i++) {
-                sum += bnSet[i];
+            for (int aBnSet : bnSet) {
+                sum += aBnSet;
             }
             
             if (sum != totalEdges) {
@@ -315,11 +317,11 @@ public class LIGO extends AbstractApplication {
     @Override
     protected void populateDistributions() {
         /*
-         * File size stuff.
+         * File size distributions.
          */
         this.distributions.put("GWF", Distribution.getTruncatedNormalDistribution(15595958.08, 334629862.67));
         this.distributions.put("GWF_MEAN", Distribution.getConstantDistribution(15595958.08));
-        this.distributions.put("TMPLTBANK.xml", Distribution.getTruncatedNormalDistribution(986917.26, 359037821.49));
+        this.distributions.put("TMPLTBANK.xml", Distribution.getTruncatedNormalDistribution(986917.26, 18948.*18948.));
         this.distributions.put("FAC_DARM", Distribution.getConstantDistribution(8415922));
         this.distributions.put("REF_DARM", Distribution.getConstantDistribution(902334));
 
@@ -329,13 +331,32 @@ public class LIGO extends AbstractApplication {
         this.distributions.put("TRIGBANK.xml", Distribution.getTruncatedNormalDistribution(12779.67, 137597136.79));
 
         /*
-         * Runtime stuff.
+         * Runtime distributions.
          */
         this.distributions.put("TmpltBank", Distribution.getTruncatedNormalDistribution(18.14, 0.18));
         this.distributions.put("TmltBank_mean", Distribution.getConstantDistribution(18.14));
-        this.distributions.put("Inspiral", Distribution.getTruncatedNormalDistribution(460.21, 297397.45));
+        this.distributions.put("Inspiral", Distribution.getTruncatedNormalDistribution(460.21, 545*545));
         this.distributions.put("Thinca", Distribution.getTruncatedNormalDistribution(5.37, 0.06));
         this.distributions.put("TrigBank", Distribution.getTruncatedNormalDistribution(5.11, 0.1));
+
+        /*
+         * Memory models.
+         */
+        memoryModels.put("TmpltBank", MemoryModel.constant(404.54e6, 0.02e6));
+        // TODO revert this to a realistic model, original value for standard deviation was 116.26e6
+        memoryModels.put("Inspiral", MemoryModel.constant(3000e6, 800.6e6));
+        memoryModels.put("Thinca", MemoryModel.constant(2.63e6, 0.83e6));
+        memoryModels.put("TrigBank", MemoryModel.constant(2.04e6, 0.14e6));
+
+        /*
+         * Peak memory relative time distributions.
+         */
+        Distribution peakMemRelativeTime = Distribution.getUniformDistribution(0.4,0.6);
+        distributions.put("TmpltBank_peak_mem_relative_time", peakMemRelativeTime);
+        distributions.put("Inspiral_peak_mem_relative_time", peakMemRelativeTime);
+        distributions.put("Thinca_peak_mem_relative_time", peakMemRelativeTime);
+        distributions.put("TrigBank_peak_mem_relative_time", peakMemRelativeTime);
+
     }
 }
 
@@ -343,7 +364,7 @@ class TmpltBank extends AppJob {
     
     public static final int KEY1 = Misc.randomInt(800000000, 0.1);
     public static final int KEY2;
-    public static final int KEY3;
+    private static final int KEY3;
     
     static {
         int key;
@@ -362,12 +383,18 @@ class TmpltBank extends AppJob {
     public static final String REF_DARM = String.format("H-CAL_REF_DARM_ERR_H1_S5_V1-%d-8.gwf",
             Misc.randomInt(800000000, 0.1));
 
-    public TmpltBank(LIGO ligo, String name, String version, String jobID) {
-        super(ligo, LIGO.namespace, name, version, jobID);
+    public TmpltBank(Ligo ligo, String name, String version, String jobID) {
+        super(ligo, Ligo.namespace, name, version, jobID);
         this.setLevel(0);
         double runtime = ligo.generateDouble("TmpltBank") * ligo.getRuntimeFactor();
-        addAnnotation("runtime",
-                String.format("%.2f", runtime));
+        addAnnotation("runtime", String.format("%.2f", runtime));
+
+        // the value passed to getPeakMemoryConsumption is irrelevant, it just serves as a seed for the random
+        // number generator of the constant model
+        long peakMemory = ligo.memoryModels.get("TmpltBank").getPeakMemoryConsumption((long) (runtime*1e6));
+        double peakMemoryTimeRelative = ligo.generateDouble("TmpltBank_peak_mem_relative_time");
+        addAnnotation("peak_mem_bytes", ""+peakMemory);
+        addArgument(new PseudoText(String.format("peak_mem_bytes=%d,peak_memory_relative_time=%.3f", peakMemory, peakMemoryTimeRelative)));
     }
 
     public void addInputs(Set<AppFilename> inputs) {
@@ -377,7 +404,7 @@ class TmpltBank extends AppJob {
     @Override
     public void addChild(AppJob child) {
         String name = String.format("H1-TMPLTBANK-%d-2048.xml", Misc.randomInt(800000000, 0.1));
-        long size = ((LIGO) getApp()).generateLong("TMPLTBANK.xml");
+        long size = ((Ligo) getApp()).generateLong("TMPLTBANK.xml");
         addLink(child, name, size);
     }
 }
@@ -387,18 +414,24 @@ class Inspiral extends AppJob {
     private static final int INJECTION_KEY1 = Misc.randomInt(800000000, 0.1);
     private static final int INJECTION_KEY2 = Misc.randomInt(8000000, 0.1);
 
-    public Inspiral(LIGO ligo, String name, String version, String jobID, int level,
-            int id) {
-        super(ligo, LIGO.namespace, name, version, jobID);
+    public Inspiral(Ligo ligo, String name, String version, String jobID, int level,
+                    int id) {
+        super(ligo, Ligo.namespace, name, version, jobID);
         this.setLevel(level);
         /*
          * All inspirals use the same injections file.
          */
-        input(String.format("HL-INJECTIONS_100-%d-%d.xml", INJECTION_KEY1, INJECTION_KEY2),
-                ligo.generateInt("INJECTION.xml"));
+        int inputSize = ligo.generateInt("INJECTION.xml");
+        input(String.format("HL-INJECTIONS_100-%d-%d.xml", INJECTION_KEY1, INJECTION_KEY2), inputSize);
         double runtime = ligo.generateDouble("Inspiral") * ligo.getRuntimeFactor();
-        addAnnotation("runtime",
-                String.format("%.2f", runtime));
+        addAnnotation("runtime", String.format("%.2f", runtime));
+
+        // the value passed to getPeakMemoryConsumption is irrelevant, it just serves as a seed for the random
+        // number generator of the constant model
+        long peakMemory = ligo.memoryModels.get("Inspiral").getPeakMemoryConsumption((long) (runtime*1e6));
+        double peakMemoryTimeRelative = ligo.generateDouble("Inspiral_peak_mem_relative_time");
+        addAnnotation("peak_mem_bytes", ""+peakMemory);
+        addArgument(new PseudoText(String.format("peak_mem_bytes=%d,peak_memory_relative_time=%.3f", peakMemory, peakMemoryTimeRelative)));
     }
 
     public void addInputs(Set<AppFilename> inputs) {
@@ -411,11 +444,11 @@ class Inspiral extends AppJob {
         for (AppFilename input : inputs) {
             if (input.getFilename().contains("TMPLTBANK")) {
                 String filename = input.getFilename().replace("TMPLTBANK", "INSPIRAL");
-                long size = ((LIGO) getApp()).generateLong("INSPIRAL.xml");
+                long size = ((Ligo) getApp()).generateLong("INSPIRAL.xml");
                 addLink(child, filename, size);
             } else if (input.getFilename().contains("TRIGBANK")) {
                 String filename = input.getFilename().replace("TRIGBANK", "INSPIRAL");
-                long size = ((LIGO) getApp()).generateLong("INSPIRAL.xml");
+                long size = ((Ligo) getApp()).generateLong("INSPIRAL.xml");
                 addLink(child, filename, size);
             }
         }
@@ -424,12 +457,18 @@ class Inspiral extends AppJob {
 
 class Thinca extends AppJob {
     
-    public Thinca(LIGO ligo, String name, String version, String jobID, int level) {
-        super(ligo, LIGO.namespace, name, version, jobID);
+    public Thinca(Ligo ligo, String name, String version, String jobID, int level) {
+        super(ligo, Ligo.namespace, name, version, jobID);
         this.setLevel(level);
         double runtime = ligo.generateDouble("Thinca") * ligo.getRuntimeFactor();
-        addAnnotation("runtime",
-                String.format("%.2f", runtime));
+        addAnnotation("runtime", String.format("%.2f", runtime));
+
+        // the value passed to getPeakMemoryConsumption is irrelevant, it just serves as a seed for the random
+        // number generator of the constant model
+        long peakMemory = ligo.memoryModels.get("Thinca").getPeakMemoryConsumption((long) (runtime*1e6));
+        double peakMemoryTimeRelative = ligo.generateDouble("Thinca_peak_mem_relative_time");
+        addAnnotation("peak_mem_bytes", ""+peakMemory);
+        addArgument(new PseudoText(String.format("peak_mem_bytes=%d,peak_memory_relative_time=%.3f", peakMemory, peakMemoryTimeRelative)));
     }
 
     private void generateOutput(AppJob child) {
@@ -448,7 +487,7 @@ class Thinca extends AppJob {
                 }
             }
         }
-        long size = ((LIGO) getApp()).generateInt("THINCA.xml");
+        long size = ((Ligo) getApp()).generateInt("THINCA.xml");
         if (child != null) {
             addLink(child, filename, size);
         } else {
@@ -468,12 +507,18 @@ class Thinca extends AppJob {
 
 class TrigBank extends AppJob {
     
-    public TrigBank(LIGO ligo, String name, String version, String jobID) {
-        super(ligo, LIGO.namespace, name, version, jobID);
+    public TrigBank(Ligo ligo, String name, String version, String jobID) {
+        super(ligo, Ligo.namespace, name, version, jobID);
         this.setLevel(3);
         double runtime = ligo.generateDouble("TrigBank") * ligo.getRuntimeFactor();
-        addAnnotation("runtime",
-                String.format("%.2f", runtime * ligo.getRuntimeFactor()));
+        addAnnotation("runtime", String.format("%.2f", runtime * ligo.getRuntimeFactor()));
+
+        // the value passed to getPeakMemoryConsumption is irrelevant, it just serves as a seed for the random
+        // number generator of the constant model
+        long peakMemory = ligo.memoryModels.get("TrigBank").getPeakMemoryConsumption((long) (runtime*1e6));
+        double peakMemoryTimeRelative = ligo.generateDouble("TrigBank_peak_mem_relative_time");
+        addAnnotation("peak_mem_bytes", ""+peakMemory);
+        addArgument(new PseudoText(String.format("peak_mem_bytes=%d,peak_memory_relative_time=%.3f", peakMemory, peakMemoryTimeRelative)));
     }
 
     @Override
@@ -489,7 +534,7 @@ class TrigBank extends AppJob {
         }
         String filename = String.format("H1-TRIGBANK_%s-%d-%d.xml", prefix,
                 Misc.randomInt(800000000, 0.1), Misc.randomInt(0, 10000));
-        long size = ((LIGO) getApp()).generateLong("TRIGBANK.xml");
+        long size = ((Ligo) getApp()).generateLong("TRIGBANK.xml");
         addLink(child, filename, size);
     }
 }

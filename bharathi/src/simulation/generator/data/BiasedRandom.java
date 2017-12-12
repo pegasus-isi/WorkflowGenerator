@@ -8,7 +8,7 @@ import java.util.Arrays;
  * @author Shishir Bharathi
  */
 public class BiasedRandom implements DataFactor {
-    private int totalFiles;
+    private final int totalFiles;
 
     public BiasedRandom(int totalFiles) {
         this.totalFiles = totalFiles;

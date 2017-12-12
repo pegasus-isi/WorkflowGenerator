@@ -17,31 +17,35 @@ import org.griphyn.vdl.dax.Profile;
 /**
  * @author Shishir Bharathi
  */
-public abstract class AppJob extends Job {
+public class AppJob extends Job {
 
-    private Application app;
-    private Set<AppFilename> inputs;
-    private Set<AppFilename> outputs;
-    private Map<String, String> annotations;
+    private final Application app;
+    private final Set<AppFilename> inputs;
+    private final Set<AppFilename> outputs;
+    private final Map<String, String> annotations;
 
-    protected AppJob(Application app, String namespace, String name, String version, String jobID) {
+    AppJob(Application app, String namespace, String name, String version, String jobID) {
         super(namespace, name, version, jobID);
         this.app = app;
         this.app.getDAX().addJob(this);
-        this.inputs = new HashSet<AppFilename>();
-        this.outputs = new HashSet<AppFilename>();
-        this.annotations = new HashMap<String, String>();
+        this.inputs = new HashSet<>();
+        this.outputs = new HashSet<>();
+        this.annotations = new HashMap<>();
     }
 
-    protected void addAnnotation(String key, String value) {
+    void addAnnotation(String key, String value) {
         this.annotations.put(key, value);
     }
 
-    protected Application getApp() {
+    public String getAnnotation(String key) {
+        return annotations.get(key);
+    }
+
+    Application getApp() {
         return this.app;
     }
 
-    protected Set<AppFilename> getInputs() {
+    Set<AppFilename> getInputs() {
         return this.inputs;
     }
 
@@ -49,24 +53,24 @@ public abstract class AppJob extends Job {
         return this.outputs;
     }
 
-    protected void input(AppFilename f) {
+    void input(AppFilename f) {
         if (!this.inputs.contains(f)) {
             this.addUses(f);
             this.inputs.add(f);
         }
     }
 
-    protected void input(String filename, long size) {
+    void input(String filename, long size) {
         input(new AppFilename(filename, LFN.INPUT, size));
     }
 
-    protected void input(Collection<AppFilename> filenames) {
+    void input(Collection<AppFilename> filenames) {
         for (AppFilename filename : filenames) {
             input(filename);
         }
     }
 
-    protected void output(AppFilename f) {
+    private void output(AppFilename f) {
         if (!this.outputs.contains(f)) {
             this.addUses(f);
             this.outputs.add(f);
@@ -77,7 +81,7 @@ public abstract class AppJob extends Job {
         output(filename, 0);
     }
 
-    protected void output(String filename, long size) {
+    void output(String filename, long size) {
         output(new AppFilename(filename, LFN.OUTPUT, size));
     }
 
@@ -91,18 +95,18 @@ public abstract class AppJob extends Job {
         addLink(child, filename, 0);
     }
 
-    protected void addLink(AppJob child, String filename, long size) {
+    void addLink(AppJob child, String filename, long size) {
         addLink(child, new AppFilename(filename, LFN.OUTPUT, size, LFN.XFER_NOT, false),
                 new AppFilename(filename, LFN.INPUT, size, LFN.XFER_NOT, false));
     }
 
-    protected void addLink(AppJob child, AppFilename out, AppFilename in) {
+    private void addLink(AppJob child, AppFilename out, AppFilename in) {
         this.app.getDAX().addChild(child.getID(), this.getID());
         this.output(out);
         child.input(in);
     }
 
-    protected void addChild(AppJob child) {
+    void addChild(AppJob child) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

@@ -7,7 +7,7 @@ import java.util.Map;
  * @author Shishir Bharathi
  */
 public class ShapeFactory {
-    private static Map<String, Shape> map;
+    private static final Map<String, Shape> map;
 
     static {
         map = new HashMap<String, Shape>();
@@ -20,7 +20,7 @@ public class ShapeFactory {
     }
 
     public static Shape getShape(String shape) throws Exception {
-        Shape sh = (Shape) map.get(shape.toUpperCase());
+        Shape sh = map.get(shape.toUpperCase());
         
         if (sh == null) {
             throw new Exception("Shape " + shape + " not found.");

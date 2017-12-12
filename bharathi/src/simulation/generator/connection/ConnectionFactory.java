@@ -7,7 +7,7 @@ import java.util.Map;
  * @author Shishir Bharathi
  */
 public class ConnectionFactory {
-    private static Map<String, Connection> map;
+    private static final Map<String, Connection> map;
 
     static {
         map = new HashMap<String, Connection>();
@@ -20,7 +20,7 @@ public class ConnectionFactory {
 
     public static Connection getConnection(String connection)
         throws Exception {
-        Connection conn = (Connection) map.get(connection.toUpperCase());
+        Connection conn = map.get(connection.toUpperCase());
 
         if (conn == null) {
             throw new Exception("Connection " + connection + " not found.");

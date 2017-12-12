@@ -16,7 +16,7 @@ import simulation.generator.util.Misc;
 public class Genome extends AbstractApplication {
 
     public static final String namespace = "Genome";
-    private static int MAX_SEQUENCES = 160;
+    private static final int MAX_SEQUENCES = 160;
     private static final int laneFactor = 4;
     private double runtimeFactor = 1;
     private String expt;
@@ -134,14 +134,13 @@ public class Genome extends AbstractApplication {
         if (numJobs > 0) {
             construct(numJobs);
         } else if (lanes > 0 && sequences > 0) {
-            int[] counts = Misc.closeNonZeroRandoms(lanes, sequences, 0.1);
-            this.counts = counts;
+            this.counts = Misc.closeNonZeroRandoms(lanes, sequences, 0.1);
         } else {
             usage(1);
         }
     }
 
-    public void construct(int numJobs) {
+    private void construct(int numJobs) {
 
         int bestLanes = 0;
         int bestSplits = 0;
@@ -340,8 +339,8 @@ public class Genome extends AbstractApplication {
 
 class FastQSplit extends AppJob {
 
-    private int laneID;
-    private long size;
+    private final int laneID;
+    private final long size;
 
     public FastQSplit(Genome genome, String name, String version, String jobID, int laneID) {
         super(genome, Genome.namespace, name, version, jobID);
@@ -381,7 +380,7 @@ class FilterContams extends AppJob {
     }
 
     @Override
-    protected void addChild(AppJob child) {
+    void addChild(AppJob child) {
         Set<AppFilename> inputs = getInputs();
         AppFilename in = null;
         for (AppFilename input : inputs) {
@@ -406,7 +405,7 @@ class Sol2Sanger extends AppJob {
     }
 
     @Override
-    protected void addChild(AppJob child) {
+    void addChild(AppJob child) {
         Set<AppFilename> inputs = getInputs();
         AppFilename in = null;
         for (AppFilename input : inputs) {
@@ -430,7 +429,7 @@ class Fast2Bfq extends AppJob {
     }
 
     @Override
-    protected void addChild(AppJob child) {
+    void addChild(AppJob child) {
         Set<AppFilename> inputs = getInputs();
         AppFilename in = null;
         for (AppFilename input : inputs) {
@@ -456,7 +455,7 @@ class MaqMap extends AppJob {
     }
 
     @Override
-    protected void addChild(AppJob child) {
+    void addChild(AppJob child) {
         Set<AppFilename> inputs = getInputs();
         AppFilename in = null;
         for (AppFilename input : inputs) {
@@ -482,7 +481,7 @@ class MaqMap extends AppJob {
 
 class MapMerge extends AppJob {
 
-    private int mapID;
+    private final int mapID;
 
     public MapMerge(Genome genome, String name, String version, String jobID, int mapID) {
         super(genome, Genome.namespace, name, version, jobID);
@@ -490,7 +489,7 @@ class MapMerge extends AppJob {
     }
 
     @Override
-    protected void addChild(AppJob child) {
+    void addChild(AppJob child) {
         Set<AppFilename> inputs = getInputs();
         long totalSize = 0;
         for (AppFilename input : inputs) {
@@ -519,7 +518,7 @@ class MaqIndex extends AppJob {
     }
 
     @Override
-    protected void addChild(AppJob child) {
+    void addChild(AppJob child) {
         Set<AppFilename> inputs = getInputs();
         AppFilename in = null;
         for (AppFilename input : inputs) {
