@@ -23,8 +23,8 @@ def forkjoin(N, alpha, runtimeDist, sizeDist):
         
         lastlevel = []
         for j in range(0,W):
-            tin = File(name="task_%d_%d_in.dat", size=sizeDist()*GB)
-            tout = File(name="task_%d_%d_out.dat", size=sizeDist()*GB)
+            tin = File(name="task_%d_%d_in.dat"%(i,j), size=sizeDist()*GB)
+            tout = File(name="task_%d_%d_out.dat"%(i,j), size=sizeDist()*GB)
             
             fork.addOutput(tin)
             lastlevel.append(tout)
