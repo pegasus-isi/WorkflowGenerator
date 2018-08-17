@@ -31,16 +31,17 @@ public class AppGenerator {
                 null, 'a');
         longopts[1] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
 
+        String[] orig_args =  Arrays.copyOfRange(args, 0, args.length);
         Getopt g = new Getopt("AppGenerator", args, "a:h", longopts);
         g.setOpterr(false);
 
         Application app = null;
-
+        int count=0;
         while ((c = g.getopt()) != -1) {
             switch (c) {
                 case 'a':
                     app = AppFactory.getApp(g.getOptarg());
-
+                    count+=2;
                     break;
 
                 case 'h':
@@ -49,15 +50,14 @@ public class AppGenerator {
                     break;
 
                 default:
-                    usage(1);
             }
         }
 
         if (app == null) {
+            System.out.println("App == NULL");
             usage(1);
         }
-
-        String[] newArgs = Arrays.copyOfRange(args, g.getOptind(), args.length);
+        String[] newArgs = Arrays.copyOfRange(orig_args, count, args.length);
         app.generateWorkflow(newArgs);
         app.printWorkflow(System.out);
     }
