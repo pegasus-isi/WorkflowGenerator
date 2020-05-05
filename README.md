@@ -1,5 +1,7 @@
 **NOTE: This repository is not maintained any longer. We are in the process of developing a new Workflow Generator that will be released soon as part of the [WorkflowHub Project](https://workflowhub.org).** 
 
+---
+
 Synthetic Workflow Generators
 =============================
 
