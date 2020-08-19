@@ -1,9 +1,11 @@
-**NOTE: This repository is no longer maintained. We are in the process of developing a new _Workflow Generator_ that will be released soon as part of the [WorkflowHub Project](https://workflowhub.org).** 
+
+# NOTE: 
+
+**This repository is no longer maintained. We have released a new _Workflow Generator_ as part of the [WorkflowHub Project](https://workflowhub.org).** 
 
 ---
 
-Synthetic Workflow Generators
-=============================
+### Synthetic Workflow Generators
 
 This repository contains several synthetic workflow generators that can be used
 to evaluate scheduling and provisioning algorithms for scientific workflow
